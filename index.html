@@ -111,6 +111,9 @@ nav {
 .home-card.c-blue:hover { background: var(--blue-s); }
 .home-card.c-purple:hover { background: rgba(168,126,184,0.06); }
 .home-card.c-green:hover { background: var(--green-s); }
+.home-card.c-red::before { background: var(--red); }
+.home-card.c-red .card-date { color: var(--red); }
+.home-card.c-red:hover { background: var(--red-s); }
 .card-date {
   font-family: 'Space Mono', monospace;
   font-size: 10px; letter-spacing: 3px; margin-bottom: 8px;
@@ -317,6 +320,30 @@ nav {
         </div>
         <div class="card-arrow">→</div>
       </div>
+      <div class="home-card c-red" style="animation-delay:0.75s" onclick="promptPassword()">
+        <div class="card-left">
+          <div class="card-date" style="color:var(--red)">幹部專用</div>
+          <div class="card-name">開幕典禮　幹部版</div>
+          <div class="card-desc">詳細流程・負責人・抽獎安排</div>
+        </div>
+        <div class="card-arrow">🔒</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PASSWORD OVERLAY -->
+<div id="pw-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center;">
+  <div style="background:#111;border:1px solid #2a2a2a;border-radius:10px;padding:36px 32px;max-width:320px;width:90%;text-align:center;">
+    <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--red);margin-bottom:16px;text-transform:uppercase;">幹部專用</div>
+    <div style="font-size:20px;font-weight:900;margin-bottom:24px;">請輸入密碼</div>
+    <input id="pw-input" type="password" maxlength="10" placeholder="••••"
+      style="width:100%;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:6px;padding:12px 16px;color:#e8e4dc;font-size:18px;text-align:center;font-family:'Space Mono',monospace;letter-spacing:6px;margin-bottom:12px;outline:none;"
+      onkeydown="if(event.key==='Enter')checkPassword()">
+    <div id="pw-error" style="font-size:12px;color:#c86e6e;height:18px;margin-bottom:12px;"></div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="closePw()" style="flex:1;padding:10px;background:transparent;border:1px solid #2a2a2a;border-radius:6px;color:#888;cursor:pointer;font-family:'Noto Serif TC',serif;">取消</button>
+      <button onclick="checkPassword()" style="flex:1;padding:10px;background:#c86e6e;border:none;border-radius:6px;color:#fff;cursor:pointer;font-weight:600;font-family:'Noto Serif TC',serif;">進入</button>
     </div>
   </div>
 </div>
@@ -658,6 +685,120 @@ function showPage(id) {
   document.getElementById('page-' + id).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+function promptPassword() {
+  const overlay = document.getElementById('pw-overlay');
+  overlay.style.display = 'flex';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-error').textContent = '';
+  setTimeout(() => document.getElementById('pw-input').focus(), 100);
+}
+function closePw() {
+  document.getElementById('pw-overlay').style.display = 'none';
+}
+function checkPassword() {
+  const val = document.getElementById('pw-input').value;
+  if (val === '0101') {
+    closePw();
+    showPage('staff-opening');
+  } else {
+    document.getElementById('pw-error').textContent = '密碼錯誤，請再試一次';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
 </script>
 </body>
 </html>
+<!-- STAFF OPENING -->
+<div class="page" id="page-staff-opening">
+  <nav>
+    <button class="nav-back" onclick="showPage('home')">← 返回</button>
+    <span class="nav-title">開幕典禮　幹部版</span>
+  </nav>
+  <div class="content-wrap">
+    <div class="page-header">
+      <div class="page-eyebrow" style="color:#c86e6e">幹部專用 · 115年4月22日（三）</div>
+      <div class="page-title">開幕典禮　幹部版</div>
+      <div class="page-sub">08:30 – 12:30　完整細流</div>
+    </div>
+    <div class="tl-single-header">
+      <div class="tl-col-label">時段</div>
+      <div class="tl-col-label">內容</div>
+      <div class="tl-col-label">負責</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.05s">
+      <div class="tl-time">08:30–08:40</div>
+      <div class="tl-item"><div class="ti-title">工作人員簽到</div></div>
+      <div class="tl-resp">行政組</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.1s">
+      <div class="tl-time">08:40–09:50</div>
+      <div class="tl-item highlight"><div class="ti-title">測試・彩排</div></div>
+      <div class="tl-resp">各組人員</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.15s">
+      <div class="tl-time">09:50–10:05</div>
+      <div class="tl-item"><div class="ti-title">入場／來賓簽到</div></div>
+      <div class="tl-resp">公關組</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.2s">
+      <div class="tl-time">10:05–10:10</div>
+      <div class="tl-item highlight"><div class="ti-title">開場</div></div>
+      <div class="tl-resp">公關組</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.25s">
+      <div class="tl-time">10:20–10:30</div>
+      <div class="tl-item"><div class="ti-title">長官來賓介紹</div></div>
+      <div class="tl-resp">公關組</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.3s">
+      <div class="tl-time">10:30–10:35</div>
+      <div class="tl-item perf"><div class="ti-title">Cosplay 同好研習社　跳舞</div></div>
+      <div class="tl-resp">5 分鐘</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.35s">
+      <div class="tl-time">10:35–10:40</div>
+      <div class="tl-item" style="border-color:#a87eb8;background:rgba(168,126,184,0.07)"><div class="ti-title">抽獎</div><div class="ti-note">同時架設樂器</div></div>
+      <div class="tl-resp">公關組</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.4s">
+      <div class="tl-time">10:40–10:44</div>
+      <div class="tl-item perf"><div class="ti-title">晚上不睡教　樂團</div></div>
+      <div class="tl-resp">4 分鐘</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.45s">
+      <div class="tl-time">10:44–10:49</div>
+      <div class="tl-item" style="border-color:#a87eb8;background:rgba(168,126,184,0.07)"><div class="ti-title">抽獎</div><div class="ti-note">同時架設樂器</div></div>
+      <div class="tl-resp">公關組</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.5s">
+      <div class="tl-time">10:49–10:55</div>
+      <div class="tl-item perf"><div class="ti-title">一定ipad溫開水　樂團</div></div>
+      <div class="tl-resp">6 分鐘</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.55s">
+      <div class="tl-time">10:55–11:20</div>
+      <div class="tl-item highlight"><div class="ti-title">頒獎</div></div>
+      <div class="tl-resp">公關組</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.6s">
+      <div class="tl-time">11:20–11:25</div>
+      <div class="tl-item" style="border-color:#a87eb8;background:rgba(168,126,184,0.07)"><div class="ti-title">抽獎</div></div>
+      <div class="tl-resp">公關組</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.65s">
+      <div class="tl-time">11:25–11:30</div>
+      <div class="tl-item"><div class="ti-title">大合照</div></div>
+      <div class="tl-resp">畢籌會全員＋師長</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.7s">
+      <div class="tl-time">11:30–12:30</div>
+      <div class="tl-item"><div class="ti-title">進入展場／自由參觀</div></div>
+      <div class="tl-resp"></div>
+    </div>
+    <div class="page-footer">
+      <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
+      <div>116級畢籌會</div>
+    </div>
+  </div>
+</div>
