@@ -3,403 +3,661 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>兔騎士影展｜彩排時間線</title>
+<title>第12屆 ARK 兔騎士影展</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0a;
-    --border: #222;
-    --accent-up: #c8a96e;
-    --accent-down: #7eb8c8;
-    --accent-school: #a87eb8;
-    --warn: #c86e6e;
-    --text: #e8e4dc;
-    --muted: #555;
-    --surface-up: rgba(200,169,110,0.06);
-    --surface-down: rgba(126,184,200,0.06);
-    --surface-warn: rgba(200,110,110,0.08);
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Noto Serif TC', 'Noto Sans TC', serif;
-    padding: 36px 20px 60px;
-    min-height: 100vh;
-  }
+:root {
+  --bg: #0a0a0a;
+  --surface: #111;
+  --border: #1e1e1e;
+  --border2: #2a2a2a;
+  --text: #e8e4dc;
+  --muted: #555;
+  --muted2: #888;
+  --gold: #c8a96e;
+  --blue: #7eb8c8;
+  --purple: #a87eb8;
+  --green: #7eb88a;
+  --red: #c86e6e;
+  --gold-s: rgba(200,169,110,0.07);
+  --blue-s: rgba(126,184,200,0.07);
+  --red-s: rgba(200,110,110,0.08);
+  --green-s: rgba(126,184,138,0.07);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Serif TC', serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-  header { margin-bottom: 32px; opacity: 0; animation: fadeUp 0.7s ease forwards; }
-  .ev-label { font-family: monospace; font-size: 10px; letter-spacing: 4px; color: var(--accent-up); margin-bottom: 8px; text-transform: uppercase; }
-  h1 { font-size: clamp(22px,4vw,36px); font-weight:900; letter-spacing:-1px; margin-bottom:4px; }
-  .sub { font-family: monospace; font-size:11px; color:var(--muted); letter-spacing:2px; }
+.page { display: none; min-height: 100vh; }
+.page.active { display: block; animation: pageIn 0.5s ease; }
+@keyframes pageIn {
+  from { opacity:0; transform: translateY(16px); }
+  to   { opacity:1; transform: translateY(0); }
+}
 
-  .notice {
-    margin-bottom: 24px;
-    padding: 12px 16px;
-    border-left: 3px solid var(--warn);
-    background: var(--surface-warn);
-    border-radius: 0 5px 5px 0;
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.7;
-    opacity: 0;
-    animation: fadeUp 0.7s ease 0.1s forwards;
-  }
-  .notice strong { color: var(--warn); font-weight: 600; }
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.nav-back {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px; letter-spacing: 2px;
+  color: var(--muted2); cursor: pointer;
+  background: none; border: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--gold); }
+.nav-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px; letter-spacing: 3px;
+  color: var(--muted); text-transform: uppercase;
+}
 
-  .grid-header {
-    display: grid;
-    grid-template-columns: 64px 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 8px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-    opacity: 0;
-    animation: fadeUp 0.7s ease 0.2s forwards;
-  }
-  .col-label { font-family: monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
-  .col-dot { width:8px;height:8px;border-radius:50%;flex-shrink:0; }
-  .col-dot.up { background:var(--accent-up); }
-  .col-dot.down { background:var(--accent-down); }
-  .col-dot.school { background:var(--accent-school); }
-  .col-label.up { color: var(--accent-up); }
-  .col-label.down { color: var(--accent-down); }
+/* HOME */
+.home-wrap {
+  max-width: 680px; margin: 0 auto;
+  padding: 80px 24px 80px;
+}
+.home-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; letter-spacing: 5px;
+  color: var(--gold); margin-bottom: 16px;
+  opacity: 0; animation: fadeUp 0.7s ease 0.1s forwards;
+}
+.home-title {
+  font-size: clamp(32px, 7vw, 64px);
+  font-weight: 900; line-height: 1.05;
+  letter-spacing: -2px; margin-bottom: 8px;
+  opacity: 0; animation: fadeUp 0.7s ease 0.2s forwards;
+}
+.home-title span { color: var(--gold); }
+.home-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px; color: var(--muted);
+  letter-spacing: 2px; margin-bottom: 64px;
+  opacity: 0; animation: fadeUp 0.7s ease 0.3s forwards;
+}
+.home-cards { display: flex; flex-direction: column; gap: 12px; }
+.home-card {
+  border: 1px solid var(--border2); border-radius: 8px;
+  padding: 28px 28px; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  transition: border-color 0.25s, background 0.25s, transform 0.25s;
+  opacity: 0; animation: fadeUp 0.6s ease forwards;
+  position: relative; overflow: hidden;
+}
+.home-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; transition: opacity 0.25s; opacity: 0;
+}
+.home-card.c-gold::before { background: var(--gold); }
+.home-card.c-blue::before { background: var(--blue); }
+.home-card.c-purple::before { background: var(--purple); }
+.home-card.c-green::before { background: var(--green); }
+.home-card:hover { transform: translateX(6px); border-color: #333; }
+.home-card:hover::before { opacity: 1; }
+.home-card.c-gold:hover { background: var(--gold-s); }
+.home-card.c-blue:hover { background: var(--blue-s); }
+.home-card.c-purple:hover { background: rgba(168,126,184,0.06); }
+.home-card.c-green:hover { background: var(--green-s); }
+.card-date {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; letter-spacing: 3px; margin-bottom: 8px;
+}
+.home-card.c-gold .card-date { color: var(--gold); }
+.home-card.c-blue .card-date { color: var(--blue); }
+.home-card.c-purple .card-date { color: var(--purple); }
+.home-card.c-green .card-date { color: var(--green); }
+.card-name { font-size: clamp(18px, 3vw, 24px); font-weight: 900; letter-spacing: -0.5px; margin-bottom: 4px; }
+.card-desc { font-size: 12px; color: var(--muted2); line-height: 1.6; }
+.card-arrow { font-size: 20px; color: var(--muted); transition: transform 0.25s, color 0.25s; flex-shrink: 0; }
+.home-card:hover .card-arrow { transform: translateX(4px); color: var(--text); }
 
-  .timeline { position: relative; }
-  .row {
-    display: grid;
-    grid-template-columns: 64px 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 6px;
-    opacity: 0;
-    animation: fadeUp 0.5s ease forwards;
-    align-items: start;
-  }
-  .t-label { font-family: monospace; font-size: 11px; color: var(--muted); padding-top: 13px; text-align: right; line-height: 1.3; white-space: nowrap; }
+/* CONTENT */
+.content-wrap { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+.page-header { margin-bottom: 36px; opacity: 0; animation: fadeUp 0.6s ease 0.05s forwards; }
+.page-eyebrow { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--gold); margin-bottom: 10px; text-transform: uppercase; }
+.page-title { font-size: clamp(24px, 4vw, 40px); font-weight: 900; letter-spacing: -1px; margin-bottom: 4px; line-height: 1.15; }
+.page-sub { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 2px; }
 
-  .cell { min-height: 40px; padding: 10px 13px; border-radius: 5px; border-left: 3px solid transparent; transition: transform 0.2s; }
-  .cell:hover { transform: translateY(-2px); }
-  .cell.empty { border-color: transparent; background: transparent; }
-  .cell.up { background: var(--surface-up); border-color: var(--accent-up); }
-  .cell.down { background: var(--surface-down); border-color: var(--accent-down); }
-  .cell.warn { background: var(--surface-warn); border-color: var(--warn); }
+.notice {
+  margin-bottom: 28px; padding: 12px 16px;
+  border-left: 3px solid var(--red); background: var(--red-s);
+  border-radius: 0 5px 5px 0;
+  font-size: 12px; color: var(--muted2); line-height: 1.7;
+  opacity: 0; animation: fadeUp 0.6s ease 0.1s forwards;
+}
+.notice strong { color: var(--red); }
 
-  .cell-title { font-size: 13px; font-weight: 600; line-height: 1.4; margin-bottom: 3px; }
-  .cell.warn .cell-title { color: var(--warn); }
-  .cell-note { font-size: 11px; color: var(--muted); line-height: 1.5; }
-  .hl { color: var(--warn); }
+/* DUAL TIMELINE */
+.tl-header {
+  display: grid; grid-template-columns: 68px 1fr 1fr;
+  gap: 10px; margin-bottom: 6px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border2);
+  opacity: 0; animation: fadeUp 0.6s ease 0.15s forwards;
+}
+.tl-col { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+.tl-col.gold { color: var(--gold); }
+.tl-col.blue { color: var(--blue); }
+.pip { width:8px;height:8px;border-radius:50%;flex-shrink:0; }
+.pip.gold { background:var(--gold); }
+.pip.blue { background:var(--blue); }
+.pip.purple { background:var(--purple); }
+.pip.green { background:var(--green); }
+.tl-row {
+  display: grid; grid-template-columns: 68px 1fr 1fr;
+  gap: 10px; margin-bottom: 5px; align-items: start;
+  opacity: 0; animation: fadeUp 0.45s ease forwards;
+}
+.tl-t { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); padding-top: 12px; text-align: right; line-height: 1.35; white-space: nowrap; }
+.cell { padding: 10px 13px; border-radius: 4px; border-left: 3px solid transparent; transition: transform 0.2s, background 0.2s; min-height: 38px; }
+.cell:hover { transform: translateX(3px); }
+.cell.empty { border-color: transparent !important; background: transparent !important; }
+.cell.gold { background: var(--gold-s); border-color: var(--gold); }
+.cell.blue { background: var(--blue-s); border-color: var(--blue); }
+.cell.red  { background: var(--red-s);  border-color: var(--red); }
+.ct { font-size: 13px; font-weight: 600; line-height: 1.4; margin-bottom: 2px; }
+.cell.red .ct { color: var(--red); }
+.cn { font-size: 11px; color: var(--muted2); line-height: 1.5; }
+.cn .hl { color: var(--red); }
+.badge { display: inline-block; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; background: rgba(200,110,110,0.15); color: var(--red); border: 1px solid rgba(200,110,110,0.3); border-radius: 3px; padding: 1px 5px; margin-bottom: 4px; }
 
-  .sync-badge {
-    display: inline-block;
-    font-family: monospace;
-    font-size: 9px;
-    letter-spacing: 1px;
-    background: rgba(200,110,110,0.15);
-    color: var(--warn);
-    border: 1px solid rgba(200,110,110,0.3);
-    border-radius: 3px;
-    padding: 1px 5px;
-    margin-bottom: 5px;
-  }
+/* SINGLE TIMELINE */
+.tl-single-header {
+  display: grid; grid-template-columns: 80px 1fr 100px;
+  gap: 10px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border2); margin-bottom: 4px;
+  opacity: 0; animation: fadeUp 0.6s ease 0.15s forwards;
+}
+.tl-single-row {
+  display: grid; grid-template-columns: 80px 1fr 100px;
+  gap: 10px; margin-bottom: 4px; align-items: start;
+  opacity: 0; animation: fadeUp 0.45s ease forwards;
+}
+.tl-col-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.tl-time { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); padding-top: 11px; white-space: nowrap; }
+.tl-item { padding: 9px 13px; border-radius: 4px; border-left: 3px solid var(--border2); background: rgba(255,255,255,0.02); transition: transform 0.2s, border-color 0.2s; }
+.tl-item:hover { transform: translateX(3px); border-color: var(--gold); }
+.tl-item.highlight { border-color: var(--gold); background: var(--gold-s); }
+.tl-item.perf { border-color: var(--blue); background: var(--blue-s); }
+.ti-title { font-size: 13px; font-weight: 600; line-height: 1.4; margin-bottom: 2px; }
+.ti-note { font-size: 11px; color: var(--muted2); }
+.tl-resp { padding-top: 11px; font-size: 11px; color: var(--muted); line-height: 1.5; }
 
-  .debrief {
-    margin-top: 24px;
-    padding: 16px 20px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    opacity: 0;
-    animation: fadeUp 0.6s ease 1.4s forwards;
-  }
-  .debrief-title { font-family: monospace; font-size:10px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:10px; }
-  .chips { display:flex;flex-wrap:wrap;gap:7px; }
-  .chip { font-size:11px; color:var(--muted); padding:3px 10px; border:1px solid var(--border); border-radius:20px; }
-  .chip::before { content:'□ '; color:var(--accent-up); }
+/* DEBRIEF */
+.debrief { margin-top: 24px; padding: 16px 20px; border: 1px solid var(--border2); border-radius: 6px; opacity: 0; animation: fadeUp 0.6s ease 1.3s forwards; }
+.debrief-title { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; }
+.chips { display:flex; flex-wrap:wrap; gap:6px; }
+.chip { font-size: 11px; color: var(--muted); padding: 3px 10px; border: 1px solid var(--border2); border-radius: 20px; }
+.chip::before { content:'□ '; color: var(--gold); }
 
-  /* 兩欄：左演藝廳，右展場組+校內組 */
-  .contacts {
-    margin-top: 24px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    opacity: 0;
-    animation: fadeUp 0.6s ease 1.55s forwards;
-  }
-  .contact-col { display: flex; flex-direction: column; gap: 14px; }
+/* CONTACTS */
+.contacts { margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; opacity: 0; animation: fadeUp 0.6s ease 1.45s forwards; }
+.contact-col { display: flex; flex-direction: column; gap: 14px; }
+.cb { padding: 14px 16px; border: 1px solid var(--border2); border-radius: 6px; }
+.cb.gold { border-top: 3px solid var(--gold); }
+.cb.blue { border-top: 3px solid var(--blue); }
+.cb.purple { border-top: 3px solid var(--purple); }
+.cb-title { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+.cb.gold .cb-title { color: var(--gold); }
+.cb.blue .cb-title { color: var(--blue); }
+.cb.purple .cb-title { color: var(--purple); }
+.cr { margin-bottom: 11px; }
+.cr:last-child { margin-bottom: 0; }
+.cr-role { font-size: 10px; color: var(--muted); margin-bottom: 2px; }
+.cr-name { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.4; }
+.cr-phone { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
 
-  .contact-block {
-    padding: 14px 16px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-  }
-  .contact-block.up { border-top: 3px solid var(--accent-up); }
-  .contact-block.down { border-top: 3px solid var(--accent-down); }
-  .contact-block.school { border-top: 3px solid var(--accent-school); }
+/* ROSTER PAGE */
+.roster-notice {
+  margin-bottom: 28px; padding: 16px 20px;
+  border: 1px solid rgba(200,169,110,0.2);
+  border-left: 3px solid var(--gold);
+  background: var(--gold-s); border-radius: 0 6px 6px 0;
+  opacity: 0; animation: fadeUp 0.6s ease 0.1s forwards;
+}
+.roster-notice-title { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
+.roster-notice-body { font-size: 13px; color: var(--muted2); line-height: 1.7; }
+.roster-notice-body strong { color: var(--red); }
 
-  .contact-block-title {
-    font-family: monospace;
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .contact-block.up .contact-block-title { color: var(--accent-up); }
-  .contact-block.down .contact-block-title { color: var(--accent-down); }
-  .contact-block.school .contact-block-title { color: var(--accent-school); }
+.roster-placeholder {
+  margin-bottom: 32px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  opacity: 0; animation: fadeUp 0.6s ease 0.2s forwards;
+}
+.roster-block {
+  padding: 24px 20px; border: 1px dashed var(--border2); border-radius: 6px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 160px; text-align: center; gap: 10px;
+}
+.roster-block.blue-dash { border-color: rgba(126,184,200,0.3); }
+.roster-block.purple-dash { border-color: rgba(168,126,184,0.3); }
+.roster-block-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; }
+.roster-block.blue-dash .roster-block-label { color: var(--blue); }
+.roster-block.purple-dash .roster-block-label { color: var(--purple); }
+.roster-pending { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
-  .contact-row { margin-bottom: 11px; }
-  .contact-row:last-child { margin-bottom: 0; }
-  .contact-role-label { font-size: 10px; color: var(--muted); margin-bottom: 2px; }
-  .contact-name { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.4; }
-  .contact-phone { font-size: 11px; color: var(--muted); font-family: monospace; letter-spacing: 0.5px; }
+.roster-contacts { margin-top: 8px; opacity: 0; animation: fadeUp 0.6s ease 0.35s forwards; }
+.roster-contacts-title { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; margin-bottom: 14px; }
 
-  footer {
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-    font-family: monospace;
-    font-size: 10px;
-    color: var(--muted);
-    line-height: 1.8;
-    opacity: 0;
-    animation: fadeUp 0.6s ease 1.7s forwards;
-  }
+/* LEGEND */
+.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; opacity: 0; animation: fadeUp 0.6s ease 0.12s forwards; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted2); }
 
-  @media (max-width: 500px) {
-    .grid-header, .row { grid-template-columns: 48px 1fr 1fr; gap: 6px; }
-    .cell { padding: 8px 9px; }
-    .cell-title { font-size: 12px; }
-    .cell-note { font-size: 10px; }
-    .t-label { font-size: 10px; }
-    .contacts { grid-template-columns: 1fr; }
-  }
+/* FOOTER */
+.page-footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.9; opacity: 0; animation: fadeUp 0.6s ease 1.6s forwards; }
 
-  @keyframes fadeUp {
-    from { opacity:0; transform:translateY(12px); }
-    to { opacity:1; transform:translateY(0); }
-  }
+@media (max-width: 560px) {
+  .tl-header, .tl-row { grid-template-columns: 52px 1fr 1fr; gap: 6px; }
+  .tl-t { font-size: 9px; }
+  .cell { padding: 8px 9px; }
+  .ct { font-size: 12px; }
+  .cn { font-size: 10px; }
+  .tl-single-header, .tl-single-row { grid-template-columns: 68px 1fr; }
+  .tl-resp { display: none; }
+  .contacts, .roster-placeholder { grid-template-columns: 1fr; }
+  .home-card { padding: 20px 18px; }
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
 </style>
 </head>
 <body>
-<div style="max-width:960px;margin:0 auto;">
 
-  <header>
-    <div class="ev-label">第12屆 ARK · 115年4月21日（二）· 永康區社教中心</div>
-    <h1>兔騎士影展　彩排時間線</h1>
-    <div class="sub">完整彩排 · 116級畢籌會</div>
-  </header>
-
-  <div class="notice">
-    <strong>⚠ 表演彩排備注</strong><br>
-    每組表演彩排時間為 <strong>20 分鐘</strong>，可提早結束，<strong>最長不得超過 20 分鐘</strong>。
-  </div>
-
-  <div class="grid-header">
-    <div></div>
-    <div class="col-label up"><div class="col-dot up"></div>樓上　演藝廳</div>
-    <div class="col-label down"><div class="col-dot down"></div>樓下　展示廳</div>
-  </div>
-
-  <div class="timeline">
-
-    <div class="row" style="animation-delay:0.15s">
-      <div class="t-label">16:00</div>
-      <div class="cell empty"></div>
-      <div class="cell down">
-        <div class="cell-title">器材清點</div>
-        <div class="cell-note">台南應用科技大學・活動場務組</div>
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="home-wrap">
+    <div class="home-eyebrow">第12屆 ARK · 116級畢籌會</div>
+    <h1 class="home-title">兔騎士<br><span>影展</span></h1>
+    <div class="home-sub">115年4月21–24日　永康區社教中心</div>
+    <div class="home-cards">
+      <div class="home-card c-gold" style="animation-delay:0.35s" onclick="showPage('rehearsal')">
+        <div class="card-left">
+          <div class="card-date">4月21日（二）</div>
+          <div class="card-name">彩排</div>
+          <div class="card-desc">演藝廳・展示廳　完整彩排流程</div>
+        </div>
+        <div class="card-arrow">→</div>
       </div>
-    </div>
-
-    <div class="row" style="animation-delay:0.25s">
-      <div class="t-label">17:20<br>–<br>17:50</div>
-      <div class="cell up"><div class="cell-title">主持人試流程</div></div>
-      <div class="cell empty"></div>
-    </div>
-
-    <div class="row" style="animation-delay:0.32s">
-      <div class="t-label">17:30<br>–<br>18:00</div>
-      <div class="cell empty"></div>
-      <div class="cell down">
-        <div class="cell-title">貨車抵達</div>
-        <div class="cell-note">廠商・等待裝車</div>
+      <div class="home-card c-blue" style="animation-delay:0.45s" onclick="showPage('opening')">
+        <div class="card-left">
+          <div class="card-date">4月22日（三）</div>
+          <div class="card-name">開幕典禮</div>
+          <div class="card-desc">10:00–12:00　開幕式流程</div>
+        </div>
+        <div class="card-arrow">→</div>
       </div>
-    </div>
-
-    <div class="row" style="animation-delay:0.39s">
-      <div class="t-label">17:50<br>–<br>18:20</div>
-      <div class="cell up">
-        <div class="cell-title">播放影片彩排</div>
-        <div class="cell-note">確認畫質・音量・片序</div>
+      <div class="home-card c-purple" style="animation-delay:0.55s" onclick="showPage('teardown')">
+        <div class="card-left">
+          <div class="card-date">4月24日（五）</div>
+          <div class="card-name">撤展</div>
+          <div class="card-desc">13:30–20:00　器材撤場流程</div>
+        </div>
+        <div class="card-arrow">→</div>
       </div>
-      <div class="cell empty"></div>
-    </div>
-
-    <div class="row" style="animation-delay:0.46s">
-      <div class="t-label">18:00<br>–<br>18:30</div>
-      <div class="cell empty"></div>
-      <div class="cell down">
-        <div class="cell-title">器材清點上車・運輸進場</div>
-        <div class="cell-note"><span class="hl">⚠ 展示廳組須 18:00 到場預備</span></div>
+      <div class="home-card c-green" style="animation-delay:0.65s" onclick="showPage('roster')">
+        <div class="card-left">
+          <div class="card-date">搬運工作</div>
+          <div class="card-name">搬運分工名單</div>
+          <div class="card-desc">請依分配確實執行・聯絡幹部</div>
+        </div>
+        <div class="card-arrow">→</div>
       </div>
-    </div>
-
-    <div class="row" style="animation-delay:0.53s">
-      <div class="t-label">18:20<br>–<br>18:30</div>
-      <div class="cell up"><div class="cell-title">緩衝／換場</div></div>
-      <div class="cell empty"></div>
-    </div>
-
-    <div class="row" style="animation-delay:0.60s">
-      <div class="t-label">18:30<br>–<br>18:50</div>
-      <div class="cell up">
-        <div class="cell-title">Cosplay 同好研習社　跳舞</div>
-        <div class="cell-note">確認音樂播放＋走位・最長 20 分鐘</div>
-      </div>
-      <div class="cell down">
-        <div class="sync-badge">同步進行</div>
-        <div class="cell-title">開始場佈＋搬樂器上後台</div>
-        <div class="cell-note">分派人力走後台貨梯，約 10–15 分鐘</div>
-      </div>
-    </div>
-
-    <div class="row" style="animation-delay:0.67s">
-      <div class="t-label">18:40<br>–<br>18:50</div>
-      <div class="cell warn">
-        <div class="cell-title">⚠ 樂器就位・音響測試</div>
-        <div class="cell-note">須於 18:50 前完成，晚上不睡教上場前確認</div>
-      </div>
-      <div class="cell down"><div class="cell-title">場佈進行中</div></div>
-    </div>
-
-    <div class="row" style="animation-delay:0.74s">
-      <div class="t-label">18:50<br>–<br>19:10</div>
-      <div class="cell up">
-        <div class="cell-title">晚上不睡教　樂團</div>
-        <div class="cell-note">確認音響・入退場走位・最長 20 分鐘</div>
-      </div>
-      <div class="cell down"><div class="cell-title">場佈進行中</div></div>
-    </div>
-
-    <div class="row" style="animation-delay:0.81s">
-      <div class="t-label">19:10<br>–<br>19:30</div>
-      <div class="cell up">
-        <div class="cell-title">一定ipad溫開水　樂團</div>
-        <div class="cell-note">確認音響・入退場走位・最長 20 分鐘</div>
-      </div>
-      <div class="cell down"><div class="cell-title">場佈進行中</div></div>
-    </div>
-
-    <div class="row" style="animation-delay:0.88s">
-      <div class="t-label">19:30</div>
-      <div class="cell up">
-        <div class="cell-title">彩排結束・Debrief</div>
-        <div class="cell-note">各組回報問題，確認隔日修正事項</div>
-      </div>
-      <div class="cell empty"></div>
-    </div>
-
-    <div class="row" style="animation-delay:0.95s">
-      <div class="t-label">20:00<br>–<br>20:30</div>
-      <div class="cell empty"></div>
-      <div class="cell down">
-        <div class="cell-title">器材清點・確認是否需補運</div>
-        <div class="cell-note">展示廳組再三核對數量</div>
-      </div>
-    </div>
-
-    <div class="row" style="animation-delay:1.02s">
-      <div class="t-label">20:30</div>
-      <div class="cell empty"></div>
-      <div class="cell down"><div class="cell-title">結束場佈</div></div>
-    </div>
-
-  </div>
-
-  <div class="debrief">
-    <div class="debrief-title">Debrief 確認清單</div>
-    <div class="chips">
-      <div class="chip">影片播放順序及格式</div>
-      <div class="chip">主持人流程口稿</div>
-      <div class="chip">各表演音響音量</div>
-      <div class="chip">樂團換場銜接</div>
-      <div class="chip">展示廳器材清點完整</div>
-      <div class="chip">隔日修正事項記錄</div>
     </div>
   </div>
-
-  <div class="contacts">
-
-    <!-- 左欄：演藝廳 -->
-    <div class="contact-col">
-      <div class="contact-block up">
-        <div class="contact-block-title"><div class="col-dot up"></div>樓上　演藝廳</div>
-        <div class="contact-row">
-          <div class="contact-role-label">會長</div>
-          <div class="contact-name">周莉蓉</div>
-          <div class="contact-phone">0902-391-907</div>
-        </div>
-        <div class="contact-row">
-          <div class="contact-role-label">副會長</div>
-          <div class="contact-name">楊尚融</div>
-          <div class="contact-phone">0909-171-106</div>
-        </div>
-        <div class="contact-row">
-          <div class="contact-role-label">場務組組長</div>
-          <div class="contact-name">郭妤君</div>
-          <div class="contact-phone">0963-738-623</div>
-        </div>
-        <div class="contact-row">
-          <div class="contact-role-label">公關組組長</div>
-          <div class="contact-name">黃羽辛</div>
-          <div class="contact-phone">0963-593-679</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 右欄：展場組 + 校內組 -->
-    <div class="contact-col">
-      <div class="contact-block down">
-        <div class="contact-block-title"><div class="col-dot down"></div>樓下　展場組</div>
-        <div class="contact-row">
-          <div class="contact-role-label">場務組組長</div>
-          <div class="contact-name">陳怡妃</div>
-          <div class="contact-phone">0905-701-358</div>
-        </div>
-        <div class="contact-row">
-          <div class="contact-role-label">場務組副組長</div>
-          <div class="contact-name">葉玟慧</div>
-          <div class="contact-phone">0907-483-234</div>
-        </div>
-        <div class="contact-row">
-          <div class="contact-role-label">場務組副組長</div>
-          <div class="contact-name">陳宥諭</div>
-          <div class="contact-phone">0937-792-918</div>
-        </div>
-      </div>
-
-      <div class="contact-block school">
-        <div class="contact-block-title"><div class="col-dot school"></div>學校　校內組</div>
-        <div class="contact-row">
-          <div class="contact-role-label">副會長</div>
-          <div class="contact-name">徐維鴻</div>
-        </div>
-        <div class="contact-row">
-          <div class="contact-role-label">場務組副組長</div>
-          <div class="contact-name">邱玉婷</div>
-          <div class="contact-phone">0968-696-728</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <footer>
-    <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
-    <div>116級畢籌會</div>
-  </footer>
-
 </div>
+
+<!-- REHEARSAL -->
+<div class="page" id="page-rehearsal">
+  <nav>
+    <button class="nav-back" onclick="showPage('home')">← 返回</button>
+    <span class="nav-title">彩排　4月21日</span>
+  </nav>
+  <div class="content-wrap">
+    <div class="page-header">
+      <div class="page-eyebrow">115年4月21日（二）· 永康區社教中心</div>
+      <div class="page-title">彩排時間線</div>
+      <div class="page-sub">完整彩排 · 116級畢籌會</div>
+    </div>
+    <div class="notice">
+      <strong>⚠ 表演彩排備注</strong><br>
+      每組表演彩排時間為 <strong>20 分鐘</strong>，可提早結束，<strong>最長不得超過 20 分鐘</strong>。
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="pip gold"></div>樓上　演藝廳</div>
+      <div class="legend-item"><div class="pip blue"></div>樓下　展示廳</div>
+      <div class="legend-item"><div class="pip" style="background:var(--red)"></div>注意事項</div>
+    </div>
+    <div class="tl-header">
+      <div></div>
+      <div class="tl-col gold"><div class="pip gold"></div>演藝廳</div>
+      <div class="tl-col blue"><div class="pip blue"></div>展示廳</div>
+    </div>
+    <div class="tl-row" style="animation-delay:0.1s">
+      <div class="tl-t">16:00</div>
+      <div class="cell empty"></div>
+      <div class="cell blue"><div class="ct">器材清點</div><div class="cn">台南應用科技大學・活動場務組</div></div>
+    </div>
+    <div class="tl-row" style="animation-delay:0.17s">
+      <div class="tl-t">17:20<br>–<br>17:50</div>
+      <div class="cell gold"><div class="ct">主持人試流程</div></div>
+      <div class="cell empty"></div>
+    </div>
+    <div class="tl-row" style="animation-delay:0.22s">
+      <div class="tl-t">17:30<br>–<br>18:00</div>
+      <div class="cell empty"></div>
+      <div class="cell blue"><div class="ct">貨車抵達</div><div class="cn">廠商・等待裝車</div></div>
+    </div>
+    <div class="tl-row" style="animation-delay:0.27s">
+      <div class="tl-t">17:50<br>–<br>18:20</div>
+      <div class="cell gold"><div class="ct">播放影片彩排</div><div class="cn">確認畫質・音量・片序</div></div>
+      <div class="cell empty"></div>
+    </div>
+    <div class="tl-row" style="animation-delay:0.32s">
+      <div class="tl-t">18:00<br>–<br>18:30</div>
+      <div class="cell empty"></div>
+      <div class="cell blue"><div class="ct">器材清點上車・運輸進場</div><div class="cn"><span class="hl">⚠ 展示廳組須 18:00 到場預備</span></div></div>
+    </div>
+    <div class="tl-row" style="animation-delay:0.37s">
+      <div class="tl-t">18:20<br>–<br>18:30</div>
+      <div class="cell gold"><div class="ct">緩衝／換場</div></div>
+      <div class="cell empty"></div>
+    </div>
+    <div class="tl-row" style="animation-delay:0.42s">
+      <div class="tl-t">18:30<br>–<br>18:50</div>
+      <div class="cell gold"><div class="ct">Cosplay 同好研習社　跳舞</div><div class="cn">確認音樂播放＋走位・最長 20 分鐘</div></div>
+      <div class="cell blue"><div class="badge">同步進行</div><div class="ct">場佈＋搬樂器上後台</div><div class="cn">後台貨梯，約 10–15 分鐘</div></div>
+    </div>
+    <div class="tl-row" style="animation-delay:0.47s">
+      <div class="tl-t">18:40<br>–<br>18:50</div>
+      <div class="cell red"><div class="ct">⚠ 樂器就位・音響測試</div><div class="cn">須於 18:50 前完成</div></div>
+      <div class="cell blue"><div class="ct">場佈進行中</div></div>
+    </div>
+    <div class="tl-row" style="animation-delay:0.52s">
+      <div class="tl-t">18:50<br>–<br>19:10</div>
+      <div class="cell gold"><div class="ct">晚上不睡教　樂團</div><div class="cn">確認音響・入退場走位・最長 20 分鐘</div></div>
+      <div class="cell blue"><div class="ct">場佈進行中</div></div>
+    </div>
+    <div class="tl-row" style="animation-delay:0.57s">
+      <div class="tl-t">19:10<br>–<br>19:30</div>
+      <div class="cell gold"><div class="ct">一定ipad溫開水　樂團</div><div class="cn">確認音響・入退場走位・最長 20 分鐘</div></div>
+      <div class="cell blue"><div class="ct">場佈進行中</div></div>
+    </div>
+    <div class="tl-row" style="animation-delay:0.62s">
+      <div class="tl-t">19:30</div>
+      <div class="cell gold"><div class="ct">彩排結束・Debrief</div><div class="cn">各組回報問題，確認隔日修正事項</div></div>
+      <div class="cell empty"></div>
+    </div>
+    <div class="tl-row" style="animation-delay:0.67s">
+      <div class="tl-t">20:00<br>–<br>20:30</div>
+      <div class="cell empty"></div>
+      <div class="cell blue"><div class="ct">器材清點・確認是否需補運</div><div class="cn">展示廳組再三核對數量</div></div>
+    </div>
+    <div class="tl-row" style="animation-delay:0.72s">
+      <div class="tl-t">20:30</div>
+      <div class="cell empty"></div>
+      <div class="cell blue"><div class="ct">結束場佈</div></div>
+    </div>
+    <div class="debrief">
+      <div class="debrief-title">Debrief 確認清單</div>
+      <div class="chips">
+        <div class="chip">影片播放順序及格式</div>
+        <div class="chip">主持人流程口稿</div>
+        <div class="chip">各表演音響音量</div>
+        <div class="chip">樂團換場銜接</div>
+        <div class="chip">展示廳器材清點完整</div>
+        <div class="chip">隔日修正事項記錄</div>
+      </div>
+    </div>
+    <div class="contacts">
+      <div class="contact-col">
+        <div class="cb gold">
+          <div class="cb-title"><div class="pip gold"></div>樓上　演藝廳</div>
+          <div class="cr"><div class="cr-role">會長</div><div class="cr-name">周莉蓉</div><div class="cr-phone">0902-391-907</div></div>
+          <div class="cr"><div class="cr-role">副會長</div><div class="cr-name">楊尚融</div><div class="cr-phone">0909-171-106</div></div>
+          <div class="cr"><div class="cr-role">場務組組長</div><div class="cr-name">郭妤君</div><div class="cr-phone">0963-738-623</div></div>
+          <div class="cr"><div class="cr-role">公關組組長</div><div class="cr-name">黃羽辛</div><div class="cr-phone">0963-593-679</div></div>
+        </div>
+      </div>
+      <div class="contact-col">
+        <div class="cb blue">
+          <div class="cb-title"><div class="pip blue"></div>樓下　展場組</div>
+          <div class="cr"><div class="cr-role">場務組組長</div><div class="cr-name">陳怡妃</div><div class="cr-phone">0905-701-358</div></div>
+          <div class="cr"><div class="cr-role">場務組副組長</div><div class="cr-name">葉玟慧</div><div class="cr-phone">0907-483-234</div></div>
+          <div class="cr"><div class="cr-role">場務組副組長</div><div class="cr-name">陳宥諭</div><div class="cr-phone">0937-792-918</div></div>
+        </div>
+        <div class="cb purple">
+          <div class="cb-title"><div class="pip purple"></div>學校　校內組</div>
+          <div class="cr"><div class="cr-role">副會長</div><div class="cr-name">徐維鴻</div></div>
+          <div class="cr"><div class="cr-role">場務組副組長</div><div class="cr-name">邱玉婷</div><div class="cr-phone">0968-696-728</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="page-footer">
+      <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
+      <div>116級畢籌會</div>
+    </div>
+  </div>
+</div>
+
+<!-- OPENING -->
+<div class="page" id="page-opening">
+  <nav>
+    <button class="nav-back" onclick="showPage('home')">← 返回</button>
+    <span class="nav-title">開幕典禮　4月22日</span>
+  </nav>
+  <div class="content-wrap">
+    <div class="page-header">
+      <div class="page-eyebrow">115年4月22日（三）· 永康區社教中心</div>
+      <div class="page-title">開幕典禮</div>
+      <div class="page-sub">10:00 – 12:00</div>
+    </div>
+    <div class="tl-single-header">
+      <div class="tl-col-label">時段</div>
+      <div class="tl-col-label">內容</div>
+      <div class="tl-col-label">備注</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.1s">
+      <div class="tl-time">10:00–10:05</div>
+      <div class="tl-item highlight"><div class="ti-title">開場</div></div>
+      <div class="tl-resp"></div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.17s">
+      <div class="tl-time">10:05–10:20</div>
+      <div class="tl-item highlight"><div class="ti-title">剪綵儀式</div></div>
+      <div class="tl-resp">師長</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.22s">
+      <div class="tl-time">10:20–10:30</div>
+      <div class="tl-item"><div class="ti-title">來賓介紹</div></div>
+      <div class="tl-resp">公關組</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.27s">
+      <div class="tl-time">10:30–10:35</div>
+      <div class="tl-item perf"><div class="ti-title">Cosplay 同好研習社　跳舞</div></div>
+      <div class="tl-resp">5 分鐘</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.32s">
+      <div class="tl-time">10:40–10:44</div>
+      <div class="tl-item perf"><div class="ti-title">晚上不睡教　樂團</div></div>
+      <div class="tl-resp">4 分鐘</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.37s">
+      <div class="tl-time">10:49–10:55</div>
+      <div class="tl-item perf"><div class="ti-title">一定ipad溫開水　樂團</div></div>
+      <div class="tl-resp">6 分鐘</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.42s">
+      <div class="tl-time">10:55–11:20</div>
+      <div class="tl-item highlight"><div class="ti-title">頒獎</div></div>
+      <div class="tl-resp">公關組</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.47s">
+      <div class="tl-time">11:25–11:30</div>
+      <div class="tl-item"><div class="ti-title">大合照</div></div>
+      <div class="tl-resp">畢籌會全員＋師長</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.52s">
+      <div class="tl-time">11:30 起</div>
+      <div class="tl-item"><div class="ti-title">進入展場／自由參觀</div></div>
+      <div class="tl-resp"></div>
+    </div>
+    <div class="page-footer">
+      <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
+      <div>116級畢籌會</div>
+    </div>
+  </div>
+</div>
+
+<!-- TEARDOWN -->
+<div class="page" id="page-teardown">
+  <nav>
+    <button class="nav-back" onclick="showPage('home')">← 返回</button>
+    <span class="nav-title">撤展　4月24日</span>
+  </nav>
+  <div class="content-wrap">
+    <div class="page-header">
+      <div class="page-eyebrow">115年4月24日（五）· 永康區社教中心</div>
+      <div class="page-title">撤展流程</div>
+      <div class="page-sub">13:30 – 20:00</div>
+    </div>
+    <div class="tl-single-header">
+      <div class="tl-col-label">時段</div>
+      <div class="tl-col-label">內容</div>
+      <div class="tl-col-label">負責</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.1s">
+      <div class="tl-time">13:30</div>
+      <div class="tl-item highlight"><div class="ti-title">開始撤展</div></div>
+      <div class="tl-resp">展場組</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.17s">
+      <div class="tl-time">17:30–18:00</div>
+      <div class="tl-item"><div class="ti-title">貨車抵達</div></div>
+      <div class="tl-resp">廠商</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.22s">
+      <div class="tl-time">18:00</div>
+      <div class="tl-item"><div class="ti-title">器材清點上車</div></div>
+      <div class="tl-resp">展場組</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.27s">
+      <div class="tl-time">18:00–18:30</div>
+      <div class="tl-item"><div class="ti-title">器材運輸回學校</div></div>
+      <div class="tl-resp">廠商</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.32s">
+      <div class="tl-time">18:30–20:00</div>
+      <div class="tl-item highlight"><div class="ti-title">器材搬運及清點</div><div class="ti-note">台南應用科技大學</div></div>
+      <div class="tl-resp">校內組</div>
+    </div>
+    <div class="tl-single-row" style="animation-delay:0.37s">
+      <div class="tl-time">20:00</div>
+      <div class="tl-item"><div class="ti-title">結束</div></div>
+      <div class="tl-resp"></div>
+    </div>
+    <div class="contacts" style="animation-delay:0.6s">
+      <div class="contact-col">
+        <div class="cb blue">
+          <div class="cb-title"><div class="pip blue"></div>展場組</div>
+          <div class="cr"><div class="cr-role">場務組組長</div><div class="cr-name">陳怡妃</div><div class="cr-phone">0905-701-358</div></div>
+          <div class="cr"><div class="cr-role">場務組副組長</div><div class="cr-name">葉玟慧</div><div class="cr-phone">0907-483-234</div></div>
+          <div class="cr"><div class="cr-role">場務組副組長</div><div class="cr-name">陳宥諭</div><div class="cr-phone">0937-792-918</div></div>
+        </div>
+      </div>
+      <div class="contact-col">
+        <div class="cb purple">
+          <div class="cb-title"><div class="pip purple"></div>校內組</div>
+          <div class="cr"><div class="cr-role">副會長</div><div class="cr-name">徐維鴻</div></div>
+          <div class="cr"><div class="cr-role">場務組副組長</div><div class="cr-name">邱玉婷</div><div class="cr-phone">0968-696-728</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="page-footer">
+      <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
+      <div>116級畢籌會</div>
+    </div>
+  </div>
+</div>
+
+<!-- ROSTER -->
+<div class="page" id="page-roster">
+  <nav>
+    <button class="nav-back" onclick="showPage('home')">← 返回</button>
+    <span class="nav-title">搬運分工名單</span>
+  </nav>
+  <div class="content-wrap">
+    <div class="page-header">
+      <div class="page-eyebrow">搬運工作分配</div>
+      <div class="page-title">搬運分工名單</div>
+      <div class="page-sub">請依分配確實執行</div>
+    </div>
+    <div class="roster-notice">
+      <div class="roster-notice-title">⚠ 注意事項</div>
+      <div class="roster-notice-body">
+        本名單為正式分工依據，<strong>請確實遵守</strong>，不得擅自調換。<br>
+        如有疑問請聯絡下方負責幹部。
+      </div>
+    </div>
+    <div class="roster-placeholder">
+      <div class="roster-block blue-dash">
+        <div class="pip blue" style="width:12px;height:12px;margin-bottom:4px;"></div>
+        <div class="roster-block-label">展場組　分工名單</div>
+        <div class="roster-pending">整理中，敬請稍候</div>
+      </div>
+      <div class="roster-block purple-dash">
+        <div class="pip purple" style="width:12px;height:12px;margin-bottom:4px;"></div>
+        <div class="roster-block-label">校內組　分工名單</div>
+        <div class="roster-pending">整理中，敬請稍候</div>
+      </div>
+    </div>
+    <div class="roster-contacts">
+      <div class="roster-contacts-title">聯絡幹部</div>
+      <div class="contacts" style="animation:none;opacity:1;">
+        <div class="contact-col">
+          <div class="cb blue">
+            <div class="cb-title"><div class="pip blue"></div>展場組</div>
+            <div class="cr"><div class="cr-role">場務組組長</div><div class="cr-name">陳怡妃</div><div class="cr-phone">0905-701-358</div></div>
+            <div class="cr"><div class="cr-role">場務組副組長</div><div class="cr-name">葉玟慧</div><div class="cr-phone">0907-483-234</div></div>
+            <div class="cr"><div class="cr-role">場務組副組長</div><div class="cr-name">陳宥諭</div><div class="cr-phone">0937-792-918</div></div>
+          </div>
+        </div>
+        <div class="contact-col">
+          <div class="cb purple">
+            <div class="cb-title"><div class="pip purple"></div>校內組</div>
+            <div class="cr"><div class="cr-role">副會長</div><div class="cr-name">徐維鴻</div></div>
+            <div class="cr"><div class="cr-role">場務組副組長</div><div class="cr-name">邱玉婷</div><div class="cr-phone">0968-696-728</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-footer">
+      <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
+      <div>116級畢籌會</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
 </body>
 </html>
