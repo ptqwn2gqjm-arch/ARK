@@ -50,14 +50,17 @@ nav {
   display: flex; align-items: center; gap: 16px;
 }
 .nav-back {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px; letter-spacing: 2px;
-  color: var(--muted2); cursor: pointer;
-  background: none; border: none;
-  display: flex; align-items: center; gap: 6px;
-  transition: color 0.2s;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 13px; font-weight: 600;
+  color: var(--text); cursor: pointer;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 6px 14px;
+  display: flex; align-items: center; gap: 8px;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
-.nav-back:hover { color: var(--gold); }
+.nav-back:hover { background: rgba(255,255,255,0.1); border-color: var(--gold); color: var(--gold); }
 .nav-title {
   font-family: 'Space Mono', monospace;
   font-size: 11px; letter-spacing: 3px;
@@ -273,6 +276,41 @@ nav {
   .home-card { padding: 20px 18px; }
 }
 
+/* CLASS TABS & ROSTER */
+.class-tabs { display:flex; gap:8px; margin-bottom:24px; opacity:0; animation:fadeUp 0.6s ease 0.15s forwards; }
+.class-tab { font-family:'Noto Serif TC',serif; font-size:14px; font-weight:600; padding:10px 24px; border-radius:6px; border:1px solid var(--border2); background:transparent; color:var(--muted2); cursor:pointer; transition:all 0.2s; }
+.class-tab:hover { border-color:#444; color:var(--text); }
+.class-tab.active { background:var(--gold); border-color:var(--gold); color:#0a0a0a; }
+.class-panel { animation:fadeUp 0.4s ease; }
+.roster-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:24px; }
+.roster-col { padding:16px; border:1px solid var(--border2); border-radius:6px; }
+.roster-col-title { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:3px; text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.roster-col-title.blue { color:var(--blue); }
+.roster-col-title.purple { color:var(--purple); }
+.roster-col-title.blue::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--blue); flex-shrink:0; }
+.roster-col-title.purple::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--purple); flex-shrink:0; }
+.roster-count { color:var(--muted); font-size:10px; }
+.name-list { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.name-item { font-size:13px; padding:6px 10px; background:rgba(255,255,255,0.02); border-radius:4px; border:1px solid var(--border); transition:background 0.2s; }
+.name-item:hover { background:rgba(255,255,255,0.05); }
+.roster-pending-block { font-size:12px; color:var(--muted); text-align:center; padding:32px 0; }
+@media (max-width:560px) { .roster-grid { grid-template-columns:1fr; } .name-list { grid-template-columns:1fr 1fr; } }
+
+/* WORK TABLE */
+.wg-block { border:1px solid var(--border2); border-radius:6px; overflow:hidden; }
+.wg-header { padding:12px 16px; font-family:"Space Mono",monospace; font-size:10px; letter-spacing:3px; text-transform:uppercase; display:flex; align-items:center; gap:8px; }
+.wg-header.admin { background:rgba(126,184,138,0.1); color:#7eb88a; border-bottom:1px solid var(--border2); }
+.wg-header.venue { background:rgba(126,184,200,0.1); color:#7eb8c8; border-bottom:1px solid var(--border2); }
+.wg-header.pr { background:rgba(200,169,110,0.1); color:#c8a96e; border-bottom:1px solid var(--border2); }
+.wg-header.info { background:rgba(168,126,184,0.1); color:#a87eb8; border-bottom:1px solid var(--border2); }
+.wg-header.activity { background:rgba(200,110,110,0.1); color:#c86e6e; border-bottom:1px solid var(--border2); }
+.wg-row { display:grid; grid-template-columns:120px 1fr; gap:0; border-bottom:1px solid var(--border); }
+.wg-row:last-child { border-bottom:none; }
+.wg-label { padding:11px 14px; font-size:12px; color:var(--muted2); display:flex; align-items:center; border-right:1px solid var(--border); background:rgba(255,255,255,0.01); }
+.wg-input { border:none; background:transparent; color:var(--text); font-family:"Noto Serif TC",serif; font-size:13px; padding:11px 14px; width:100%; outline:none; transition:background 0.2s; }
+.wg-input:focus { background:rgba(255,255,255,0.03); }
+.wg-input::placeholder { color:var(--muted); font-size:12px; }
+
 @keyframes fadeUp {
   from { opacity:0; transform:translateY(10px); }
   to   { opacity:1; transform:translateY(0); }
@@ -474,6 +512,43 @@ nav {
         </div>
       </div>
     </div>
+    <div style="margin-top:28px;opacity:0;animation:fadeUp 0.6s ease 0.8s forwards;">
+      <div onclick="showPage('work-table')" style="border:1px solid #2a2a2a;border-left:3px solid #c86e6e;border-radius:6px;padding:20px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:rgba(200,110,110,0.05);transition:background 0.2s,transform 0.2s;" onmouseover="this.style.background='rgba(200,110,110,0.1)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='rgba(200,110,110,0.05)';this.style.transform='translateX(0)'">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:#c86e6e;margin-bottom:6px;text-transform:uppercase;">幹部專用</div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:3px;">工作分配表</div>
+          <div style="font-size:12px;color:#888;">各組職位填寫・點擊進入</div>
+        </div>
+        <div style="font-size:20px;color:#555;">→</div>
+      </div>
+    </div>
+    <div class="page-footer">
+      <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
+      <div>116級畢籌會</div>
+    </div>
+  </div>
+</div>
+
+<!-- WORK TABLE -->
+<div class="page" id="page-work-table">
+  <nav>
+    <button class="nav-back" onclick="showPage('staff-opening')">← 返回</button>
+    <span class="nav-title">工作分配表</span>
+  </nav>
+  <div class="content-wrap">
+    <div class="page-header">
+      <div class="page-eyebrow" style="color:#c86e6e">幹部專用</div>
+      <div class="page-title">工作分配表</div>
+      <div class="page-sub">填寫後自動儲存</div>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;margin-bottom:16px;gap:8px;opacity:0;animation:fadeUp 0.5s ease 0.1s forwards;">
+      <button onclick="clearAll()" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:7px 14px;background:transparent;border:1px solid #2a2a2a;border-radius:6px;color:#888;cursor:pointer;">清除全部</button>
+      <button onclick="copyTable()" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:7px 14px;background:rgba(200,169,110,0.1);border:1px solid rgba(200,169,110,0.3);border-radius:6px;color:#c8a96e;cursor:pointer;">複製名單</button>
+    </div>
+
+    <div id="work-groups" style="display:flex;flex-direction:column;gap:16px;opacity:0;animation:fadeUp 0.5s ease 0.15s forwards;"></div>
+
     <div class="page-footer">
       <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
       <div>116級畢籌會</div>
@@ -543,6 +618,43 @@ nav {
       <div class="tl-item"><div class="ti-title">進入展場／自由參觀</div></div>
       <div class="tl-resp"></div>
     </div>
+    <div style="margin-top:28px;opacity:0;animation:fadeUp 0.6s ease 0.8s forwards;">
+      <div onclick="showPage('work-table')" style="border:1px solid #2a2a2a;border-left:3px solid #c86e6e;border-radius:6px;padding:20px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:rgba(200,110,110,0.05);transition:background 0.2s,transform 0.2s;" onmouseover="this.style.background='rgba(200,110,110,0.1)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='rgba(200,110,110,0.05)';this.style.transform='translateX(0)'">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:#c86e6e;margin-bottom:6px;text-transform:uppercase;">幹部專用</div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:3px;">工作分配表</div>
+          <div style="font-size:12px;color:#888;">各組職位填寫・點擊進入</div>
+        </div>
+        <div style="font-size:20px;color:#555;">→</div>
+      </div>
+    </div>
+    <div class="page-footer">
+      <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
+      <div>116級畢籌會</div>
+    </div>
+  </div>
+</div>
+
+<!-- WORK TABLE -->
+<div class="page" id="page-work-table">
+  <nav>
+    <button class="nav-back" onclick="showPage('staff-opening')">← 返回</button>
+    <span class="nav-title">工作分配表</span>
+  </nav>
+  <div class="content-wrap">
+    <div class="page-header">
+      <div class="page-eyebrow" style="color:#c86e6e">幹部專用</div>
+      <div class="page-title">工作分配表</div>
+      <div class="page-sub">填寫後自動儲存</div>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;margin-bottom:16px;gap:8px;opacity:0;animation:fadeUp 0.5s ease 0.1s forwards;">
+      <button onclick="clearAll()" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:7px 14px;background:transparent;border:1px solid #2a2a2a;border-radius:6px;color:#888;cursor:pointer;">清除全部</button>
+      <button onclick="copyTable()" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:7px 14px;background:rgba(200,169,110,0.1);border:1px solid rgba(200,169,110,0.3);border-radius:6px;color:#c8a96e;cursor:pointer;">複製名單</button>
+    </div>
+
+    <div id="work-groups" style="display:flex;flex-direction:column;gap:16px;opacity:0;animation:fadeUp 0.5s ease 0.15s forwards;"></div>
+
     <div class="page-footer">
       <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
       <div>116級畢籌會</div>
@@ -614,6 +726,43 @@ nav {
         </div>
       </div>
     </div>
+    <div style="margin-top:28px;opacity:0;animation:fadeUp 0.6s ease 0.8s forwards;">
+      <div onclick="showPage('work-table')" style="border:1px solid #2a2a2a;border-left:3px solid #c86e6e;border-radius:6px;padding:20px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:rgba(200,110,110,0.05);transition:background 0.2s,transform 0.2s;" onmouseover="this.style.background='rgba(200,110,110,0.1)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='rgba(200,110,110,0.05)';this.style.transform='translateX(0)'">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:#c86e6e;margin-bottom:6px;text-transform:uppercase;">幹部專用</div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:3px;">工作分配表</div>
+          <div style="font-size:12px;color:#888;">各組職位填寫・點擊進入</div>
+        </div>
+        <div style="font-size:20px;color:#555;">→</div>
+      </div>
+    </div>
+    <div class="page-footer">
+      <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
+      <div>116級畢籌會</div>
+    </div>
+  </div>
+</div>
+
+<!-- WORK TABLE -->
+<div class="page" id="page-work-table">
+  <nav>
+    <button class="nav-back" onclick="showPage('staff-opening')">← 返回</button>
+    <span class="nav-title">工作分配表</span>
+  </nav>
+  <div class="content-wrap">
+    <div class="page-header">
+      <div class="page-eyebrow" style="color:#c86e6e">幹部專用</div>
+      <div class="page-title">工作分配表</div>
+      <div class="page-sub">填寫後自動儲存</div>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;margin-bottom:16px;gap:8px;opacity:0;animation:fadeUp 0.5s ease 0.1s forwards;">
+      <button onclick="clearAll()" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:7px 14px;background:transparent;border:1px solid #2a2a2a;border-radius:6px;color:#888;cursor:pointer;">清除全部</button>
+      <button onclick="copyTable()" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:7px 14px;background:rgba(200,169,110,0.1);border:1px solid rgba(200,169,110,0.3);border-radius:6px;color:#c8a96e;cursor:pointer;">複製名單</button>
+    </div>
+
+    <div id="work-groups" style="display:flex;flex-direction:column;gap:16px;opacity:0;animation:fadeUp 0.5s ease 0.15s forwards;"></div>
+
     <div class="page-footer">
       <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
       <div>116級畢籌會</div>
@@ -637,19 +786,105 @@ nav {
       <div class="roster-notice-title">⚠ 注意事項</div>
       <div class="roster-notice-body">
         本名單為正式分工依據，<strong>請確實遵守</strong>，不得擅自調換。<br>
+        幹部（有在單獨群組的）不用搬運，若有遺漏請幹部們告知！<br>
         如有疑問請聯絡下方負責幹部。
       </div>
     </div>
-    <div class="roster-placeholder">
-      <div class="roster-block blue-dash">
-        <div class="pip blue" style="width:12px;height:12px;margin-bottom:4px;"></div>
-        <div class="roster-block-label">展場組　分工名單</div>
-        <div class="roster-pending">整理中，敬請稍候</div>
+    <div class="class-tabs">
+      <button class="class-tab active" id="tab-a" onclick="switchClass('a')">A 班</button>
+      <button class="class-tab" id="tab-b" onclick="switchClass('b')">B 班</button>
+      <button class="class-tab" id="tab-c" onclick="switchClass('c')">C 班</button>
+    </div>
+    <div id="class-a" class="class-panel">
+      <div class="roster-grid">
+        <div class="roster-col">
+          <div class="roster-col-title blue">展場組 <span class="roster-count">19 人</span></div>
+          <div class="name-list">
+            <div class="name-item">呂尚蓉</div><div class="name-item">陳宗揚</div>
+            <div class="name-item">曾于涵</div><div class="name-item">王榆順</div>
+            <div class="name-item">李宜珊</div>
+            <div class="name-item">吳鴻熹</div><div class="name-item">徐翊婷</div>
+            <div class="name-item">林怡君</div><div class="name-item">郭嘉峻</div>
+            <div class="name-item">黃筠旂</div><div class="name-item">孫于晴</div>
+            <div class="name-item">關紹哲</div><div class="name-item">黃羽辛</div>
+            <div class="name-item">林姿含</div><div class="name-item">沈弈奇</div>
+            <div class="name-item">林佩欣</div><div class="name-item">張崴薇</div>
+            <div class="name-item">翁華君</div><div class="name-item">王靜姮</div>
+          </div>
+        </div>
+        <div class="roster-col">
+          <div class="roster-col-title purple">校內組 <span class="roster-count">20 人</span></div>
+          <div class="name-list">
+            <div class="name-item">林祈言</div><div class="name-item">謝佩妤</div>
+            <div class="name-item">佳苓</div><div class="name-item">林沛諠</div>
+            <div class="name-item">李宜蓮</div><div class="name-item">陳虹蓁</div>
+            <div class="name-item">蘇雪云</div><div class="name-item">廖思嘉</div>
+            <div class="name-item">黃悅婷</div><div class="name-item">李芊華</div>
+            <div class="name-item">郭承銘</div><div class="name-item">蔡昱瑋</div>
+            <div class="name-item">李嬡</div><div class="name-item">王芃雯</div>
+            <div class="name-item">柯柏宇</div><div class="name-item">白玉展</div>
+            <div class="name-item">李麗彤</div><div class="name-item">劉丞凱</div>
+            <div class="name-item">陳郁昕</div><div class="name-item">黃莉蘋</div>
+          </div>
+        </div>
       </div>
-      <div class="roster-block purple-dash">
-        <div class="pip purple" style="width:12px;height:12px;margin-bottom:4px;"></div>
-        <div class="roster-block-label">校內組　分工名單</div>
-        <div class="roster-pending">整理中，敬請稍候</div>
+    </div>
+    <div id="class-b" class="class-panel" style="display:none;">
+      <div class="roster-grid">
+        <div class="roster-col">
+          <div class="roster-col-title blue">展場組 <span class="roster-count">16 人</span></div>
+          <div class="name-list">
+            <div class="name-item">王婷諠</div><div class="name-item">洪雅琪</div>
+            <div class="name-item">毛姵蓁</div><div class="name-item">張簡宥盈</div>
+            <div class="name-item">林佳靚</div><div class="name-item">劉祤甄</div>
+            <div class="name-item">秦葦葶</div><div class="name-item">彭若恩</div>
+            <div class="name-item">何姿穎</div><div class="name-item">鄭如芳</div>
+            <div class="name-item">林郁嫻</div><div class="name-item">徐麗凌</div>
+            <div class="name-item">陳秭翊</div><div class="name-item">曾雨群</div>
+            <div class="name-item">歐陽欣</div><div class="name-item">劉靜慈</div>
+          </div>
+        </div>
+        <div class="roster-col">
+          <div class="roster-col-title purple">校內組 <span class="roster-count">16 人</span></div>
+          <div class="name-list">
+            <div class="name-item">林上毓</div><div class="name-item">陳紹宇</div>
+            <div class="name-item">賴儀華</div><div class="name-item">呂昀庭</div>
+            <div class="name-item">洪文生</div><div class="name-item">傅暐傑</div>
+            <div class="name-item">蔡定軒</div><div class="name-item">謝欣玲</div>
+            <div class="name-item">陳名樂</div><div class="name-item">劉嘉凱</div>
+            <div class="name-item">陳鋅翰</div><div class="name-item">魏甄禎</div>
+            <div class="name-item">葉律言</div><div class="name-item">蕭淯庭</div>
+            <div class="name-item">萬育銓</div><div class="name-item">何晉嘉</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="class-c" class="class-panel" style="display:none;">
+      <div class="roster-grid">
+        <div class="roster-col">
+          <div class="roster-col-title blue">展場組 <span class="roster-count">21 人</span></div>
+          <div class="name-list">
+            <div class="name-item">孟碩恩</div><div class="name-item">黃偲昌</div>
+            <div class="name-item">鐘柏媛</div><div class="name-item">盧宗辰</div>
+            <div class="name-item">林姿岑</div><div class="name-item">王依婕</div>
+            <div class="name-item">吳柏翔</div><div class="name-item">周妍希</div>
+            <div class="name-item">李芷涵</div><div class="name-item">陳虹均</div>
+            <div class="name-item">陳瑋宏</div><div class="name-item">江慶盈</div>
+            <div class="name-item">廖子穎</div><div class="name-item">張子芹</div>
+            <div class="name-item">賴佑慈</div><div class="name-item">李翠霞</div>
+            <div class="name-item">陳鈺涓</div><div class="name-item">莊紫妍</div>
+            <div class="name-item">羅少妤</div><div class="name-item">李宜臻</div>
+            <div class="name-item">邱如妤</div>
+          </div>
+        </div>
+        <div class="roster-col">
+          <div class="roster-col-title purple">校內組 <span class="roster-count">6 人</span></div>
+          <div class="name-list">
+            <div class="name-item">李羽捷</div><div class="name-item">李浩鈴</div>
+            <div class="name-item">許雯穎</div><div class="name-item">許晏菱</div>
+            <div class="name-item">張逸敏</div><div class="name-item">甘燕姿</div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="roster-contacts">
@@ -672,6 +907,16 @@ nav {
         </div>
       </div>
     </div>
+    <div style="margin-top:28px;opacity:0;animation:fadeUp 0.6s ease 0.8s forwards;">
+      <div onclick="showPage('work-table')" style="border:1px solid #2a2a2a;border-left:3px solid #c86e6e;border-radius:6px;padding:20px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:rgba(200,110,110,0.05);transition:background 0.2s,transform 0.2s;" onmouseover="this.style.background='rgba(200,110,110,0.1)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='rgba(200,110,110,0.05)';this.style.transform='translateX(0)'">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:#c86e6e;margin-bottom:6px;text-transform:uppercase;">幹部專用</div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:3px;">工作分配表</div>
+          <div style="font-size:12px;color:#888;">各組職位填寫・點擊進入</div>
+        </div>
+        <div style="font-size:20px;color:#555;">→</div>
+      </div>
+    </div>
     <div class="page-footer">
       <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
       <div>116級畢籌會</div>
@@ -679,11 +924,38 @@ nav {
   </div>
 </div>
 
+<!-- WORK TABLE -->
+<div class="page" id="page-work-table">
+  <nav>
+    <button class="nav-back" onclick="showPage('staff-opening')">← 返回</button>
+    <span class="nav-title">工作分配表</span>
+  </nav>
+  <div class="content-wrap">
+    <div class="page-header">
+      <div class="page-eyebrow" style="color:#c86e6e">幹部專用</div>
+      <div class="page-title">工作分配表</div>
+      <div class="page-sub">填寫後自動儲存</div>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;margin-bottom:16px;gap:8px;opacity:0;animation:fadeUp 0.5s ease 0.1s forwards;">
+      <button onclick="clearAll()" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:7px 14px;background:transparent;border:1px solid #2a2a2a;border-radius:6px;color:#888;cursor:pointer;">清除全部</button>
+      <button onclick="copyTable()" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:7px 14px;background:rgba(200,169,110,0.1);border:1px solid rgba(200,169,110,0.3);border-radius:6px;color:#c8a96e;cursor:pointer;">複製名單</button>
+    </div>
+
+    <div id="work-groups" style="display:flex;flex-direction:column;gap:16px;opacity:0;animation:fadeUp 0.5s ease 0.15s forwards;"></div>
+
+    <div class="page-footer">
+      <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
+      <div>116級畢籌會</div>
+    </div>
+  </div>
+</div>
 <script>
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (id === 'work-table') renderWorkTable();
 }
 function promptPassword() {
   const overlay = document.getElementById('pw-overlay');
@@ -694,6 +966,94 @@ function promptPassword() {
 }
 function closePw() {
   document.getElementById('pw-overlay').style.display = 'none';
+}
+// Work table data
+const workGroups = [
+  { id:'admin', label:'行政組', color:'admin', roles:[
+    { id:'signin1', label:'簽到人員' },
+    { id:'signin2', label:'簽到人員' },
+    { id:'feedback', label:'製作意見回饋' },
+  ]},
+  { id:'venue', label:'場物組', color:'venue', roles:[
+    { id:'backdoor', label:'後門控' },
+    { id:'frontdoor', label:'前門控' },
+  ]},
+  { id:'pr', label:'公關組', color:'pr', roles:[
+    { id:'mc1', label:'主持人' },
+    { id:'mc2', label:'主持人' },
+    { id:'mc3', label:'主持人' },
+    { id:'guest-signin', label:'來賓簽到' },
+    { id:'guide-teacher', label:'引導師長' },
+    { id:'guide1', label:'引導學生' },
+    { id:'guide2', label:'引導學生' },
+    { id:'guide3', label:'引導學生' },
+  ]},
+  { id:'info', label:'資訊組', color:'info', roles:[
+    { id:'photo1', label:'攝影' },
+    { id:'photo2', label:'攝影' },
+    { id:'record', label:'小錄' },
+  ]},
+  { id:'activity', label:'活動組', color:'activity', roles:[
+    { id:'signboard', label:'推展版' },
+    { id:'flex1', label:'機動' },
+    { id:'flex2', label:'機動' },
+    { id:'flex3', label:'機動' },
+  ]},
+];
+
+function renderWorkTable() {
+  const saved = JSON.parse(localStorage.getItem('ark-work-table') || '{}');
+  const container = document.getElementById('work-groups');
+  if (!container) return;
+  container.innerHTML = '';
+  workGroups.forEach(group => {
+    const block = document.createElement('div');
+    block.className = 'wg-block';
+    let html = `<div class="wg-header ${group.color}">${group.label}</div>`;
+    group.roles.forEach(role => {
+      const key = group.id + '-' + role.id;
+      const val = saved[key] || '';
+      html += `<div class="wg-row">
+        <div class="wg-label">${role.label}</div>
+        <input class="wg-input" placeholder="輸入姓名" value="${val}" data-key="${key}" oninput="saveField(this)">
+      </div>`;
+    });
+    block.innerHTML = html;
+    container.appendChild(block);
+  });
+}
+
+function saveField(input) {
+  const saved = JSON.parse(localStorage.getItem('ark-work-table') || '{}');
+  saved[input.dataset.key] = input.value;
+  localStorage.setItem('ark-work-table', JSON.stringify(saved));
+}
+
+function clearAll() {
+  if (!confirm('確定要清除所有填寫內容？')) return;
+  localStorage.removeItem('ark-work-table');
+  renderWorkTable();
+}
+
+function copyTable() {
+  const saved = JSON.parse(localStorage.getItem('ark-work-table') || '{}');
+  let text = '第12屆 ARK 兔騎士影展　工作分配表\n\n';
+  workGroups.forEach(group => {
+    text += `【${group.label}】\n`;
+    group.roles.forEach(role => {
+      const key = group.id + '-' + role.id;
+      text += `  ${role.label}：${saved[key] || '（未填）'}\n`;
+    });
+    text += '\n';
+  });
+  navigator.clipboard.writeText(text).then(() => alert('已複製到剪貼簿！'));
+}
+
+function switchClass(cls) {
+  document.querySelectorAll(".class-panel").forEach(p => p.style.display = "none");
+  document.querySelectorAll(".class-tab").forEach(t => t.classList.remove("active"));
+  document.getElementById("class-" + cls).style.display = "block";
+  document.getElementById("tab-" + cls).classList.add("active");
 }
 function checkPassword() {
   const val = document.getElementById('pw-input').value;
@@ -796,6 +1156,43 @@ function checkPassword() {
       <div class="tl-item"><div class="ti-title">進入展場／自由參觀</div></div>
       <div class="tl-resp"></div>
     </div>
+    <div style="margin-top:28px;opacity:0;animation:fadeUp 0.6s ease 0.8s forwards;">
+      <div onclick="showPage('work-table')" style="border:1px solid #2a2a2a;border-left:3px solid #c86e6e;border-radius:6px;padding:20px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:rgba(200,110,110,0.05);transition:background 0.2s,transform 0.2s;" onmouseover="this.style.background='rgba(200,110,110,0.1)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='rgba(200,110,110,0.05)';this.style.transform='translateX(0)'">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:#c86e6e;margin-bottom:6px;text-transform:uppercase;">幹部專用</div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:3px;">工作分配表</div>
+          <div style="font-size:12px;color:#888;">各組職位填寫・點擊進入</div>
+        </div>
+        <div style="font-size:20px;color:#555;">→</div>
+      </div>
+    </div>
+    <div class="page-footer">
+      <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
+      <div>116級畢籌會</div>
+    </div>
+  </div>
+</div>
+
+<!-- WORK TABLE -->
+<div class="page" id="page-work-table">
+  <nav>
+    <button class="nav-back" onclick="showPage('staff-opening')">← 返回</button>
+    <span class="nav-title">工作分配表</span>
+  </nav>
+  <div class="content-wrap">
+    <div class="page-header">
+      <div class="page-eyebrow" style="color:#c86e6e">幹部專用</div>
+      <div class="page-title">工作分配表</div>
+      <div class="page-sub">填寫後自動儲存</div>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;margin-bottom:16px;gap:8px;opacity:0;animation:fadeUp 0.5s ease 0.1s forwards;">
+      <button onclick="clearAll()" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:7px 14px;background:transparent;border:1px solid #2a2a2a;border-radius:6px;color:#888;cursor:pointer;">清除全部</button>
+      <button onclick="copyTable()" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:7px 14px;background:rgba(200,169,110,0.1);border:1px solid rgba(200,169,110,0.3);border-radius:6px;color:#c8a96e;cursor:pointer;">複製名單</button>
+    </div>
+
+    <div id="work-groups" style="display:flex;flex-direction:column;gap:16px;opacity:0;animation:fadeUp 0.5s ease 0.15s forwards;"></div>
+
     <div class="page-footer">
       <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
       <div>116級畢籌會</div>
