@@ -624,9 +624,124 @@ nav {
       <div class="tl-item"><div class="ti-title">進入展場／自由參觀</div></div>
       <div class="tl-resp"></div>
     </div>
+    <div style="margin-top:28px;opacity:0;animation:fadeUp 0.6s ease 0.7s forwards;">
+      <div onclick="showPage('seats')" style="border:1px solid #2a2a2a;border-left:3px solid #7eb8c8;border-radius:6px;padding:20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:rgba(126,184,200,0.05);transition:background 0.2s,transform 0.2s;" onmouseover="this.style.background='rgba(126,184,200,0.1)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='rgba(126,184,200,0.05)';this.style.transform='translateX(0)'">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:#7eb8c8;margin-bottom:6px;text-transform:uppercase;">開幕典禮</div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:3px;">座位查詢</div>
+          <div style="font-size:12px;color:#888;">輸入姓名查詢你的座位・點擊進入</div>
+        </div>
+        <div style="font-size:20px;color:#555;">→</div>
+      </div>
+    </div>
     <div class="page-footer">
       <div>第12屆 ARK 兔騎士多媒體動畫影展</div>
       <div>116級畢籌會</div>
+    </div>
+  </div>
+</div>
+
+<!-- SEATS PAGE -->
+<div class="page" id="page-seats">
+  <nav>
+    <button class="nav-back" onclick="showPage('opening')">← 返回</button>
+    <span class="nav-title">座位查詢</span>
+  </nav>
+  <!-- Seat search UI (same as seat-search_2.html) -->
+  <style>
+  .ss-search-section{padding:16px 24px;background:#13131a;border-bottom:1px solid #2a2a3a;display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+  .ss-search-wrap{position:relative;flex:1;min-width:220px;max-width:400px;}
+  .ss-search-wrap input{width:100%;background:#1a1a24;border:1px solid #2a2a3a;border-radius:6px;padding:10px 16px 10px 40px;color:#e8e8f0;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;}
+  .ss-search-wrap input:focus{border-color:#e8c547;}
+  .ss-search-wrap input::placeholder{color:#6b6b8a;}
+  .ss-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#6b6b8a;font-size:16px;}
+  .ss-btn-clear{background:#1a1a24;border:1px solid #2a2a3a;color:#6b6b8a;padding:10px 16px;border-radius:6px;cursor:pointer;font-size:13px;font-family:inherit;transition:all .2s;}
+  .ss-btn-clear:hover{border-color:#ff6b35;color:#ff6b35;}
+  .ss-result-panel{padding:10px 24px;min-height:44px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .ss-result-card{background:#1a1a24;border:1px solid #e8c547;border-radius:6px;padding:10px 16px;font-size:13px;line-height:1.7;display:none;}
+  .ss-result-card.show{display:block;}
+  .ss-result-card .rname{font-size:16px;font-weight:700;color:#e8c547;}
+  .ss-result-card .rdetail{color:#6b6b8a;}
+  .ss-result-card .rseat{color:#e8e8f0;margin-top:4px;}
+  .ss-result-card .rseat span{color:#ff6b35;font-weight:600;}
+  .ss-no-result{color:#6b6b8a;font-size:13px;display:none;}
+  .ss-no-result.show{display:block;}
+  .ss-legend{padding:6px 24px;display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#6b6b8a;border-bottom:1px solid #2a2a3a;}
+  .ss-legend-item{display:flex;align-items:center;gap:5px;}
+  .ss-dot{width:12px;height:12px;border-radius:2px;}
+  .ss-main{padding:16px 16px;overflow-x:auto;}
+  .ss-venue{display:inline-block;min-width:900px;}
+  .ss-venue-title{text-align:center;font-size:13px;font-weight:700;color:#6b6b8a;letter-spacing:3px;margin-bottom:6px;}
+  .ss-stage{background:#e8c547;color:#000;text-align:center;font-weight:700;font-size:14px;padding:7px;border-radius:4px;margin:0 auto 14px;width:820px;letter-spacing:4px;}
+  .ss-floor-label{text-align:center;font-size:12px;color:#6b6b8a;margin-bottom:10px;letter-spacing:1px;}
+  .ss-aisle-row{display:flex;margin-bottom:3px;font-size:10px;color:#6b6b8a;letter-spacing:1px;}
+  .ss-sections{display:flex;align-items:flex-start;}
+  .ss-sec{display:flex;flex-direction:column;gap:1px;}
+  .ss-sec-gap{width:36px;flex-shrink:0;}
+  .ss-srow{display:flex;align-items:center;gap:1px;margin-bottom:1px;}
+  .ss-rl{width:26px;font-size:9px;color:#6b6b8a;text-align:right;padding-right:3px;flex-shrink:0;}
+  .ss-rr{width:26px;font-size:9px;color:#6b6b8a;text-align:left;padding-left:3px;flex-shrink:0;}
+  .ss-seat{width:22px;height:22px;border-radius:2px;font-size:7.5px;display:flex;align-items:center;justify-content:center;cursor:default;flex-shrink:0;transition:all .15s;border:1px solid transparent;position:relative;}
+  .ss-seat[data-sid]{cursor:pointer;}
+  .ss-seat[data-sid]:hover{filter:brightness(1.3);z-index:2;}
+  .ss-seat-empty{background:transparent;border-color:transparent;}
+  .ss-seat-skip{background:#1a1a1a;border-color:#222;color:#333;}
+  .ss-seat-avail{background:#1e1e2e;border-color:#2a2a3a;color:#444;}
+  .ss-seat-occ{background:#2a3a2a;border-color:#3a5a3a;color:#5a8a5a;}
+  .ss-seat-faculty{background:#2a2a5a;border-color:#4a4a9a;color:#8a8adf;cursor:default;}
+  .ss-seat-other{background:#3a2a1a;border-color:#7a5a2a;color:#9a7a4a;cursor:default;}
+  .ss-seat-found{background:#e8c547!important;border-color:#c8a030!important;color:#000!important;font-weight:700;z-index:3;box-shadow:0 0 8px #e8c547;}
+  .ss-seat-group-hi{background:#ff6b35!important;border-color:#c84a20!important;color:#fff!important;font-weight:600;z-index:2;box-shadow:0 0 4px #ff6b35;}
+  .ss-seat[data-sid]:hover::after{content:attr(data-tip);position:absolute;bottom:26px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:4px 7px;border-radius:4px;font-size:10px;white-space:nowrap;z-index:100;pointer-events:none;}
+  .ss-suggestions{position:absolute;top:44px;left:0;right:0;background:#1a1a24;border:1px solid #2a2a3a;border-radius:6px;z-index:50;overflow:hidden;display:none;}
+  .ss-suggestions.show{display:block;}
+  .ss-sug-item{padding:8px 14px;font-size:13px;cursor:pointer;transition:background .1s;}
+  .ss-sug-item:hover{background:#2a2a3a;}
+  </style>
+
+  <div class="ss-search-section">
+    <div class="ss-search-wrap">
+      <span class="ss-search-icon">🔍</span>
+      <input type="text" id="ss-input" placeholder="輸入姓名或學號搜尋座位…" autocomplete="off">
+      <div class="ss-suggestions" id="ss-sug"></div>
+    </div>
+    <button class="ss-btn-clear" onclick="ssClear()">清除</button>
+  </div>
+
+  <div style="background:#1a1a10;border-left:3px solid #e8c547;padding:8px 24px;font-size:12px;color:#b8a840;">
+    📢 如有同學找不到座位，請即時向工作人員反應。師長們請自由入席，感謝配合。
+  </div>
+
+  <div class="ss-result-panel">
+    <div class="ss-result-card" id="ss-result"></div>
+    <div class="ss-no-result" id="ss-noresult">找不到此人員，請確認姓名或學號。</div>
+  </div>
+
+  <div class="ss-legend">
+    <div class="ss-legend-item"><div class="ss-dot ss-seat-occ"></div>已分配座位</div>
+    <div class="ss-legend-item"><div class="ss-dot" style="background:#e8c547;"></div>搜尋結果</div>
+    <div class="ss-legend-item"><div class="ss-dot" style="background:#ff6b35;"></div>同組成員</div>
+    <div class="ss-legend-item"><div class="ss-dot ss-seat-skip"></div>不開放座位</div>
+    <div class="ss-legend-item"><div class="ss-dot ss-seat-faculty"></div>師長席</div>
+    <div class="ss-legend-item"><div class="ss-dot ss-seat-other"></div>其他人員席</div>
+  </div>
+
+  <div class="ss-main">
+    <div class="ss-venue">
+      <div class="ss-venue-title">臺南市永康區社教中心演藝廳</div>
+      <div class="ss-stage">舞 台</div>
+      <div class="ss-floor-label">2 樓 觀 眾 席</div>
+      <div class="ss-aisle-row">
+        <div style="width:26px"></div>
+        <div style="text-align:center;width:374px">走 道</div>
+        <div style="width:36px"></div>
+        <div style="text-align:center;width:330px">走 道</div>
+        <div style="width:36px"></div>
+        <div style="text-align:center;width:330px">走 道</div>
+        <div style="width:36px"></div>
+        <div style="text-align:center;width:374px">走 道</div>
+      </div>
+      <div class="ss-sections" id="ss-chart"></div>
     </div>
   </div>
 </div>
@@ -833,7 +948,7 @@ nav {
           <div class="name-list">
             <div class="name-item">林上毓</div><div class="name-item">陳紹宇</div>
             <div class="name-item">賴儀華</div><div class="name-item">呂昀庭</div>
-            <div class="name-item">傅暐傑</div>
+            <div class="name-item">洪文生</div><div class="name-item">傅暐傑</div>
             <div class="name-item">蔡定軒</div><div class="name-item">謝欣玲</div>
             <div class="name-item">陳名樂</div><div class="name-item">劉嘉凱</div>
             <div class="name-item">陳鋅翰</div><div class="name-item">魏甄禎</div>
@@ -1085,6 +1200,298 @@ function switchClass(cls) {
   document.getElementById("class-" + cls).style.display = "block";
   document.getElementById("tab-" + cls).classList.add("active");
 }
+// ── SEAT SEARCH (seat-search_2 style) ─────────────────────
+(function(){
+
+const ssGroups = [
+  {id:1,members:[{id:"D12370077",name:"楊尚融"},{id:"D12370406",name:"簡晨育"},{id:"D12371380",name:"陳虹蓁"},{id:"D12371064",name:"李媛"},{id:"D12371419",name:"甘燕姿"},{id:"D12371093",name:"曾雨群"}]},
+  {id:2,members:[{id:"D12371193",name:"魏甄禎"},{id:"D12370080",name:"陳紹宇"},{id:"D12370177",name:"洪文生"},{id:"D12370864",name:"溫佳依"},{id:"D12371019",name:"徐麗凌"}]},
+  {id:3,members:[{id:"D12370577",name:"羅少妤"},{id:"D12370035",name:"李浩鈴"},{id:"D12370164",name:"張逸敏"},{id:"D12370093",name:"許雯穎"},{id:"D12370106",name:"許晏菱"},{id:"D12370648",name:"李宜臻"}]},
+  {id:4,members:[{id:"D12371735",name:"康雅筑"},{id:"D12060046",name:"王婷誼"}]},
+  {id:5,members:[{id:"D12371851",name:"陳郁昕"},{id:"D12371864",name:"黃莉蘋"},{id:"D12370477",name:"廖思嘉"},{id:"D12370251",name:"溫佳芩"},{id:"D12370448",name:"鐘柏媛"},{id:"D12370277",name:"李翠霞"}]},
+  {id:6,members:[{id:"D12370506",name:"周莉蓉"},{id:"D12371106",name:"張峻嘉"},{id:"D12370751",name:"邱如妤"},{id:"D12371364",name:"呂仲捷"},{id:"D12371406",name:"蘇靖"}]},
+  {id:7,members:[{id:"D12371619",name:"李麗彤"},{id:"D12370535",name:"徐翊婷"},{id:"D12370319",name:"林沛誼"}]},
+  {id:8,members:[{id:"D12370048",name:"李芷涵"},{id:"D12371248",name:"陳虹均"},{id:"D12370964",name:"廖子穎"}]},
+  {id:9,members:[{id:"D12370693",name:"林芳綺"},{id:"D12370822",name:"邱怡蓁"},{id:"D12371035",name:"朱妍霏"}]},
+  {id:10,members:[{id:"D11270851",name:"黃羽辛"},{id:"D12370980",name:"林品妍"}]},
+  {id:11,members:[{id:"D12370706",name:"葉玟慧"},{id:"D12370151",name:"周妍希"},{id:"D12370222",name:"王依婕"},{id:"D12370819",name:"陳怡妃"}]},
+  {id:12,members:[{id:"D12370119",name:"賴儀華"},{id:"D12370377",name:"秦葦葦"}]},
+  {id:13,members:[{id:"D12370606",name:"郭嘉峻"},{id:"D12370122",name:"王榆順"},{id:"D12370922",name:"郭承銘"}]},
+  {id:14,members:[{id:"D12370019",name:"曾于涵"},{id:"D11371450",name:"謝佩妤"},{id:"D12370664",name:"黃筠旂"},{id:"D12370593",name:"黃悅婷"},{id:"D12370135",name:"李宜珊"},{id:"D12370564",name:"賴佑慈"}]},
+  {id:15,members:[{id:"D12371148",name:"林姿含"},{id:"D11370421",name:"林祈言"},{id:"D12371335",name:"林佩欣"},{id:"D12370548",name:"林怡君"}]},
+  {id:17,members:[{id:"D12371235",name:"陳瑋宏"},{id:"D12371822",name:"黃偲昌"},{id:"D12370219",name:"吳柏翔"},{id:"D12371722",name:"何普嘉"},{id:"D10370375",name:"李羽捷"}]},
+  {id:18,members:[{id:"D12370393",name:"吳鴻熹"},{id:"D12371777",name:"孟碩恩"},{id:"D12371693",name:"劉丞凱"},{id:"D12371848",name:"王靜妲"}]},
+  {id:19,members:[{id:"D12371306",name:"邱玉婷"},{id:"D12370351",name:"林姿岑"},{id:"D12370364",name:"盧宗辰"},{id:"D12370435",name:"莊紫妍"},{id:"D12370280",name:"陳鈺洵"}]},
+  {id:20,members:[{id:"D12371635",name:"張崴薇"},{id:"D12371664",name:"翁華君"}]},
+  {id:21,members:[{id:"D12371080",name:"王芃雯"},{id:"D12370722",name:"孫于晴"},{id:"D12370322",name:"李宜蓮"}]},
+  {id:22,members:[{id:"D12370264",name:"林佳靚"},{id:"D12370806",name:"鄭如芳"},{id:"D12371051",name:"陳秫翎"},{id:"D12370835",name:"林郁嫺"}]},
+  {id:23,members:[{id:"D12370677",name:"李芋華"},{id:"D12370464",name:"蘇雪云"},{id:"D12370451",name:"郭姿妘"}]},
+  {id:24,members:[{id:"D12370051",name:"毛媚蓁"},{id:"D12371677",name:"劉靜慈"},{id:"D12370551",name:"謝欣玲"},{id:"D12370777",name:"莊婷羽"}]},
+  {id:25,members:[{id:"D12370306",name:"吳芷萱"},{id:"D12370022",name:"洪雅琪"},{id:"D12370235",name:"張簡宥盈"}]},
+  {id:26,members:[{id:"D12370680",name:"陳名樂"},{id:"D12210433",name:"林上毓"}]},
+  {id:27,members:[{id:"D12370848",name:"關紹哲"},{id:"D12371151",name:"柯柏宇"},{id:"D11370463",name:"陳宗揚"},{id:"D12371277",name:"白玉展"},{id:"D12370180",name:"徐維鴻"},{id:"D12371006",name:"蔡昱璋"}]},
+  {id:28,members:[{id:"D12370748",name:"劉嘉凱"}]},
+  {id:29,members:[{id:"d12370148",name:"呂昀庭"},{id:"D12370206",name:"傅暐傑"},{id:"D12371348",name:"萬育銓"},{id:"d12370522",name:"蔡定軒"},{id:"D12370919",name:"陳錞翰"},{id:"D12371222",name:"葉律言"}]},
+  {id:30,members:[{id:"D12371048",name:"江慶盈"},{id:"D12371251",name:"蕭淯庭"},{id:"D12371206",name:"沈弈奇"}]},
+  {id:31,members:[{id:"D12371280",name:"郭妤君"},{id:"D12371135",name:"陳宥諭"},{id:"D12370764",name:"張子芹"}]},
+  {id:32,members:[{id:"D12370580",name:"彭若恩"},{id:"D12370651",name:"何姿穎"},{id:"D12370335",name:"劉翊甄"}]},
+  {id:33,members:[{id:"D12371377",name:"歐陽欣"}]},
+];
+const activeGroups = ssGroups.filter(g=>g.members.length>0);
+
+function makeSeat(num,type='avail'){return{num:String(num),type};}
+function sp(){return{num:'',type:'empty'};}
+function sk(label=''){return{num:label||'',type:'skip'};}
+
+const LEFT_ROWS=[
+  {rowNum:'1排',seats:[sk('♿'),sk('27'),sk('♿'),sk('25'),sk('♿'),sk('23'),sk('21'),sk('19'),sk('17'),sk('15')]},
+  {rowNum:'2排',seats:[makeSeat(41),makeSeat(39),makeSeat(37),sk('35'),makeSeat(33),makeSeat(31),makeSeat(29),sk('27'),makeSeat(25),makeSeat(23),makeSeat(21),makeSeat(19)]},
+  {rowNum:'3排',seats:[makeSeat(39),makeSeat(37),makeSeat(35),makeSeat(33),makeSeat(31),makeSeat(29),makeSeat(27),makeSeat(25),makeSeat(23),makeSeat(21),makeSeat(19),makeSeat(17)]},
+  {rowNum:'4排',seats:[makeSeat(43),makeSeat(41),makeSeat(39),makeSeat(37),makeSeat(35),makeSeat(33),makeSeat(31),makeSeat(29),makeSeat(27),makeSeat(25),makeSeat(23),makeSeat(21),makeSeat(19)]},
+  {rowNum:'5排',seats:[makeSeat(43),makeSeat(41),makeSeat(39),makeSeat(37),makeSeat(35),makeSeat(33),makeSeat(31),makeSeat(29),makeSeat(27),makeSeat(25),makeSeat(23),makeSeat(21),makeSeat(19)]},
+  {rowNum:'6排',seats:[makeSeat(47),makeSeat(45),makeSeat(43),makeSeat(41),makeSeat(39),makeSeat(37),makeSeat(35),makeSeat(33),makeSeat(31),makeSeat(29),makeSeat(27),makeSeat(25),makeSeat(23),makeSeat(21),makeSeat(19)]},
+  {rowNum:'7排',seats:[makeSeat(49),makeSeat(47),makeSeat(45),makeSeat(43),makeSeat(41),makeSeat(39),makeSeat(37),makeSeat(35),makeSeat(33),makeSeat(31),makeSeat(29),makeSeat(27),makeSeat(25),makeSeat(23),makeSeat(21),makeSeat(19)]},
+  {rowNum:'8排',seats:[makeSeat(51),makeSeat(49),makeSeat(47),makeSeat(45),makeSeat(43),makeSeat(41),makeSeat(39),makeSeat(37),makeSeat(35),makeSeat(33),makeSeat(31),makeSeat(29),makeSeat(27),makeSeat(25),makeSeat(23),makeSeat(21),makeSeat(19)]},
+];
+const CENTER_ROWS=[
+  {rowNum:'1排',seats:[sk('13'),sk('11'),sk('9'),sk('7'),sk('5'),sk('3'),sk('1'),sk('2'),sk('4'),sk('6'),sk('8'),sk('10'),sk('12'),sk('14')]},
+  {rowNum:'2排',seats:[makeSeat(17),makeSeat(15),makeSeat(13),makeSeat(11),makeSeat(9),makeSeat(7),makeSeat(5),makeSeat(3),makeSeat(1),makeSeat(2),makeSeat(4),makeSeat(6),makeSeat(8),makeSeat(10),makeSeat(12),makeSeat(14),makeSeat(16)]},
+  {rowNum:'3排',seats:[makeSeat(15),makeSeat(13),makeSeat(11),makeSeat(9),makeSeat(7),makeSeat(5),makeSeat(3),makeSeat(1),makeSeat(2),makeSeat(4),makeSeat(6),makeSeat(8),makeSeat(10),makeSeat(12),makeSeat(14),makeSeat(16)]},
+  {rowNum:'4排',seats:[makeSeat(17),makeSeat(15),makeSeat(13),makeSeat(11),makeSeat(9),makeSeat(7),makeSeat(5),makeSeat(3),makeSeat(1),makeSeat(2),makeSeat(4),makeSeat(6),makeSeat(8),makeSeat(10),makeSeat(12),makeSeat(14),makeSeat(16)]},
+  {rowNum:'5排',seats:[makeSeat(17),makeSeat(15),makeSeat(13),makeSeat(11),makeSeat(9),makeSeat(7),makeSeat(5),makeSeat(3),makeSeat(1),makeSeat(2),makeSeat(4),makeSeat(6),makeSeat(8),makeSeat(10),makeSeat(12),makeSeat(14),makeSeat(16)]},
+  {rowNum:'6排',seats:[makeSeat(17),makeSeat(15),makeSeat(13),makeSeat(11),makeSeat(9),makeSeat(7),makeSeat(5),makeSeat(3),makeSeat(1),makeSeat(2),makeSeat(4),makeSeat(6),makeSeat(8),makeSeat(10),makeSeat(12),makeSeat(14),makeSeat(16)]},
+  {rowNum:'7排',seats:[makeSeat(17),makeSeat(15),makeSeat(13),makeSeat(11),makeSeat(9),makeSeat(7),makeSeat(5),makeSeat(3),makeSeat(1),makeSeat(2),makeSeat(4),makeSeat(6),makeSeat(8),makeSeat(10),makeSeat(12),makeSeat(14),makeSeat(16),makeSeat(18)]},
+  {rowNum:'8排',seats:[]},
+];
+const RIGHT_ROWS=[
+  {rowNum:'1排',seats:[sk('16'),sk('18'),sk('20'),sk('22'),sk('♿'),sk('24'),sk('♿'),sk('26'),sk('♿'),sk('28')]},
+  {rowNum:'2排',seats:[makeSeat(18),makeSeat(20),makeSeat(22),makeSeat(24),makeSeat(26),sk('28'),makeSeat(30),makeSeat(32),makeSeat(34),sk('36'),makeSeat(38),makeSeat(40)]},
+  {rowNum:'3排',seats:[makeSeat(18),makeSeat(20),makeSeat(22),makeSeat(24),makeSeat(26),makeSeat(28),makeSeat(30),makeSeat(32),makeSeat(34),makeSeat(36),makeSeat(38),makeSeat(40)]},
+  {rowNum:'4排',seats:[makeSeat(18),makeSeat(20),makeSeat(22),makeSeat(24),makeSeat(26),makeSeat(28),makeSeat(30),makeSeat(32),makeSeat(34),makeSeat(36),makeSeat(38),makeSeat(40),makeSeat(42)]},
+  {rowNum:'5排',seats:[makeSeat(18),makeSeat(20),makeSeat(22),makeSeat(24),makeSeat(26),makeSeat(28),makeSeat(30),makeSeat(32),makeSeat(34),makeSeat(36),makeSeat(38),makeSeat(40),makeSeat(42),makeSeat(44)]},
+  {rowNum:'6排',seats:[makeSeat(18),makeSeat(20),makeSeat(22),makeSeat(24),makeSeat(26),makeSeat(28),makeSeat(30),makeSeat(32),makeSeat(34),makeSeat(36),makeSeat(38),makeSeat(40),makeSeat(42),makeSeat(44),makeSeat(46)]},
+  {rowNum:'7排',seats:[makeSeat(20),makeSeat(22),makeSeat(24),makeSeat(26),makeSeat(28),makeSeat(30),makeSeat(32),makeSeat(34),makeSeat(36),makeSeat(38),makeSeat(40),makeSeat(42),makeSeat(44),makeSeat(46),makeSeat(48),makeSeat(50)]},
+  {rowNum:'8排',seats:[makeSeat(20),makeSeat(22),makeSeat(24),makeSeat(26),makeSeat(28),makeSeat(30),makeSeat(32),makeSeat(34),makeSeat(36),makeSeat(38),makeSeat(40),makeSeat(42),makeSeat(44),makeSeat(46),makeSeat(48),makeSeat(50),makeSeat(52)]},
+];
+
+// Same assignment algorithm as seat-search_2.html
+function buildFullRows(rows,secName,rowFilter){
+  const result=new Map();
+  rows.forEach(row=>{
+    if(rowFilter&&!rowFilter(row.rowNum))return;
+    const key=`${secName}-${row.rowNum}`;
+    result.set(key,row.seats.map(seat=>({secName,rowName:row.rowNum,seatNum:seat.num,type:seat.type})));
+  });
+  return result;
+}
+function findContiguousBlock(fullRow,need,usedAvail){
+  let skip=usedAvail,run=0,runStart=-1;
+  for(let i=0;i<fullRow.length;i++){
+    const s=fullRow[i];
+    if(s.type!=='avail'){run=0;runStart=-1;continue;}
+    if(skip>0){skip--;run=0;runStart=-1;continue;}
+    if(run===0)runStart=i;
+    run++;
+    if(run>=need)return runStart;
+  }
+  return -1;
+}
+const goodRows=r=>['2排','3排','4排','5排'].includes(r);
+const laterRows=r=>['6排','7排','8排'].includes(r);
+const allDataRows=r=>r!=='1排';
+const innerLeft=n=>n<=31,outerLeft=n=>n>31,innerRight=n=>n<=32,outerRight=n=>n>32;
+const phaseSpecs=[
+  {rows:CENTER_ROWS,sec:'C',rowF:goodRows,numF:null},
+  {rows:LEFT_ROWS,sec:'L',rowF:goodRows,numF:innerLeft},
+  {rows:RIGHT_ROWS,sec:'R',rowF:goodRows,numF:innerRight},
+  {rows:RIGHT_ROWS,sec:'R',rowF:laterRows,numF:innerRight},
+  {rows:LEFT_ROWS,sec:'L',rowF:laterRows,numF:innerLeft},
+  {rows:LEFT_ROWS,sec:'L',rowF:allDataRows,numF:outerLeft},
+  {rows:RIGHT_ROWS,sec:'R',rowF:allDataRows,numF:outerRight},
+  {rows:CENTER_ROWS,sec:'C',rowF:laterRows,numF:null},
+];
+function buildAllRows(specs){
+  const seen=new Set(),result=[];
+  for(const{rows,sec,rowF,numF}of specs){
+    const map=buildFullRows(rows,sec,rowF);
+    for(const[key,fullRow]of map){
+      if(seen.has(key))continue;seen.add(key);
+      const filtered=fullRow.map(s=>{
+        if(s.type==='avail'&&numF&&!numF(parseInt(s.seatNum)))return{...s,type:'skip'};
+        return s;
+      });
+      result.push({key,fullRow:filtered});
+    }
+  }
+  return result;
+}
+const allRows=buildAllRows(phaseSpecs);
+const ssAssignment=new Map();
+const rowUsedAvail=new Map();
+activeGroups.forEach(group=>{
+  const need=group.members.length;
+  if(!need)return;
+  let placed=false;
+  for(const{key,fullRow}of allRows){
+    const used=rowUsedAvail.get(key)||0;
+    const startIdx=findContiguousBlock(fullRow,need,used);
+    if(startIdx===-1)continue;
+    let assigned=0;
+    for(let i=startIdx;i<fullRow.length&&assigned<need;i++){
+      if(fullRow[i].type!=='avail')continue;
+      const slot=fullRow[i];
+      const member=group.members[assigned];
+      ssAssignment.set(`${slot.secName}-${slot.rowName}-${slot.seatNum}`,
+        {groupId:group.id,memberId:member.id,memberName:member.name});
+      assigned++;
+    }
+    rowUsedAvail.set(key,used+need);
+    placed=true;break;
+  }
+});
+
+// Manual overrides (same as seat-search_2.html)
+function clearGroup(gid){const freed=[];for(const[k,i]of ssAssignment)if(i.groupId===gid)freed.push(k);freed.forEach(k=>ssAssignment.delete(k));return freed;}
+function placeGroup(gid,keys){const grp=ssGroups.find(g=>g.id===gid);grp.members.forEach((m,i)=>{if(i<keys.length)ssAssignment.set(keys[i],{groupId:gid,memberId:m.id,memberName:m.name});});}
+{const grp6Old=[];for(const[k,i]of ssAssignment)if(i.groupId===6)grp6Old.push(k);clearGroup(6);clearGroup(19);placeGroup(6,['L-3排-25','L-3排-23','L-3排-21','L-3排-19','L-3排-17']);const grp19=ssGroups.find(g=>g.id===19);grp19.members.forEach((m,i)=>{if(i<grp6Old.length)ssAssignment.set(grp6Old[i],{groupId:19,memberId:m.id,memberName:m.name});});}
+{const t21=['L-2排-33','L-2排-31','L-2排-29'],t18=['L-2排-25','L-2排-23','L-2排-21','L-2排-19'],all=new Set([...t21,...t18]),toClear=new Set([21,18]);for(const[k,i]of ssAssignment)if(all.has(k))toClear.add(i.groupId);toClear.forEach(g=>clearGroup(g));placeGroup(21,t21);placeGroup(18,t18);}
+{const ts=new Set(['L-4排-31','L-4排-29','L-4排-27','L-4排-25','L-4排-23','L-4排-21','R-4排-18','R-4排-20','R-4排-22','R-4排-24','R-4排-26','R-4排-28','R-4排-30','L-6排-31','L-6排-29']);const toClear=new Set([22,23,29,26]);for(const[k,i]of ssAssignment)if(ts.has(k))toClear.add(i.groupId);toClear.forEach(g=>clearGroup(g));placeGroup(29,['L-4排-31','L-4排-29','L-4排-27','L-4排-25','L-4排-23','L-4排-21']);placeGroup(22,['R-4排-18','R-4排-20','R-4排-22','R-4排-24']);placeGroup(23,['R-4排-26','R-4排-28','R-4排-30']);placeGroup(26,['L-6排-31','L-6排-29']);}
+{const src=['R-2排-18','R-2排-20','R-2排-22','R-2排-24','R-2排-26'],dst=['L-6排-27','L-6排-25','L-6排-23','L-6排-21','L-6排-19'];src.forEach((s,i)=>{if(ssAssignment.has(s)){const info=ssAssignment.get(s);ssAssignment.delete(s);ssAssignment.set(dst[i],info);}});}
+{const remap={'3排':'2排','4排':'3排','5排':'4排'};const toMove=[];for(const[k,i]of ssAssignment){const p=k.split('-');if(p[0]==='R'&&remap[p[1]])toMove.push([k,i,p[1],p[2]]);}toMove.forEach(([k])=>ssAssignment.delete(k));toMove.forEach(([,info,oldRow,sn])=>ssAssignment.set(`R-${remap[oldRow]}-${sn}`,info));}
+{const t6=new Set(['R-4排-18','R-4排-20','R-4排-22','R-4排-24','R-4排-26','R-4排-28']);const toClear=new Set([31,32]);for(const[k,i]of ssAssignment)if(t6.has(k))toClear.add(i.groupId);toClear.forEach(g=>clearGroup(g));placeGroup(31,['R-4排-18','R-4排-20','R-4排-22']);placeGroup(32,['R-4排-24','R-4排-26','R-4排-28']);}
+{const l5=[],l6=[];for(const[k,i]of ssAssignment){if(k.startsWith('L-5排-'))l5.push([k,i]);if(k.startsWith('L-6排-'))l6.push([k,i]);}[...l5,...l6].forEach(([k])=>ssAssignment.delete(k));l5.forEach(([k,i])=>ssAssignment.set(k.replace('L-5排-','L-6排-'),i));l6.forEach(([k,i])=>ssAssignment.set(k.replace('L-6排-','L-5排-'),i));}
+
+// Build search index
+const memberSeatMap=new Map();
+ssAssignment.forEach((info,key)=>{
+  const[sec,row,num]=key.split('-');
+  const secLabel=sec==='L'?'左區':sec==='C'?'中區':'右區';
+  const si={sec,secLabel,row,num,groupId:info.groupId,memberId:info.memberId,memberName:info.memberName,key};
+  memberSeatMap.set(info.memberName,si);
+  memberSeatMap.set(info.memberId.toUpperCase(),si);
+});
+
+const FACULTY_ROWS=new Set(['L-1排','C-1排','R-1排']);
+const OTHER_ROWS=new Set(['R-5排','R-6排']);
+function getSeatClass(sec,row,seat){
+  if(seat.type==='empty')return'ss-seat-empty';
+  const rk=`${sec}-${row.rowNum}`;
+  if(FACULTY_ROWS.has(rk))return'ss-seat-faculty';
+  if(OTHER_ROWS.has(rk))return'ss-seat-other';
+  if(seat.type==='skip')return'ss-seat-skip';
+  const k=`${sec}-${row.rowNum}-${seat.num}`;
+  return ssAssignment.has(k)?'ss-seat-occ':'ss-seat-avail';
+}
+function getSeatTip(sec,row,seat){
+  const rk=`${sec}-${row.rowNum}`;
+  if(FACULTY_ROWS.has(rk))return`師長席 ${row.rowNum} ${seat.num}號`;
+  if(OTHER_ROWS.has(rk))return`其他人員席 ${row.rowNum} ${seat.num}號`;
+  if(seat.type!=='avail')return'';
+  const k=`${sec}-${row.rowNum}-${seat.num}`;
+  const info=ssAssignment.get(k);
+  if(!info)return`${row.rowNum} ${seat.num}號（空）`;
+  return`${info.memberName}｜組${info.groupId}｜${row.rowNum} ${seat.num}號`;
+}
+
+function renderSection(rows,secName,showRight){
+  const sec=document.createElement('div');sec.className='ss-sec';
+  const maxSeats=Math.max(...rows.map(r=>r.seats.length));
+  rows.forEach(row=>{
+    const div=document.createElement('div');div.className='ss-srow';
+    const rl=document.createElement('div');rl.className='ss-rl';rl.textContent=row.rowNum;div.appendChild(rl);
+    if(secName==='L'){const pad=maxSeats-row.seats.length;for(let p=0;p<pad;p++){const e=document.createElement('div');e.className='ss-seat ss-seat-empty';div.appendChild(e);}}
+    row.seats.forEach(seat=>{
+      const el=document.createElement('div');
+      el.className='ss-seat '+getSeatClass(secName,row,seat);
+      el.textContent=seat.type==='empty'?'':seat.num;
+      const k=`${secName}-${row.rowNum}-${seat.num}`;
+      if(seat.type==='avail'&&ssAssignment.has(k)){
+        el.dataset.sid=k;el.dataset.tip=getSeatTip(secName,row,seat);
+      }
+      div.appendChild(el);
+    });
+    if(secName==='R'){const maxR=Math.max(...rows.map(r=>r.seats.length));const pad=maxR-row.seats.length;for(let p=0;p<pad;p++){const e=document.createElement('div');e.className='ss-seat ss-seat-empty';div.appendChild(e);}if(showRight){const rr=document.createElement('div');rr.className='ss-rr';rr.textContent=row.rowNum;div.appendChild(rr);}}
+    sec.appendChild(div);
+  });
+  return sec;
+}
+
+function buildSSChart(){
+  const chart=document.getElementById('ss-chart');
+  if(!chart)return;chart.innerHTML='';
+  const left=renderSection(LEFT_ROWS,'L',false);
+  const g1=document.createElement('div');g1.className='ss-sec-gap';
+  const center=renderSection(CENTER_ROWS,'C',false);
+  const g2=document.createElement('div');g2.className='ss-sec-gap';
+  const right=renderSection(RIGHT_ROWS,'R',true);
+  chart.appendChild(left);chart.appendChild(g1);chart.appendChild(center);chart.appendChild(g2);chart.appendChild(right);
+  // Click on seat
+  chart.addEventListener('click',e=>{
+    const seat=e.target.closest('[data-sid]');
+    if(!seat)return;
+    const info=ssAssignment.get(seat.dataset.sid);
+    if(!info)return;
+    document.getElementById('ss-input').value=info.memberName;
+    ssSearch(info.memberName);
+  });
+}
+
+let ssCurrentResult=null;
+function ssHighlight(foundKey,gid){
+  document.querySelectorAll('.ss-seat-found,.ss-seat-group-hi').forEach(el=>{el.classList.remove('ss-seat-found','ss-seat-group-hi');el.classList.add('ss-seat-occ');});
+  document.querySelectorAll('[data-sid]').forEach(el=>{
+    const k=el.dataset.sid;
+    if(k===foundKey){el.classList.remove('ss-seat-occ');el.classList.add('ss-seat-found');}
+    else if(ssAssignment.get(k)?.groupId===gid){el.classList.remove('ss-seat-occ');el.classList.add('ss-seat-group-hi');}
+  });
+}
+function ssClearHighlights(){document.querySelectorAll('.ss-seat-found,.ss-seat-group-hi').forEach(el=>{el.classList.remove('ss-seat-found','ss-seat-group-hi');el.classList.add('ss-seat-occ');});}
+
+function ssSearch(query){
+  query=query.trim();
+  const sug=document.getElementById('ss-sug');
+  const rc=document.getElementById('ss-result');
+  const nr=document.getElementById('ss-noresult');
+  if(!query){sug.classList.remove('show');rc.classList.remove('show');nr.classList.remove('show');ssClearHighlights();return;}
+  const q=query.toUpperCase();
+  let found=memberSeatMap.get(query)||memberSeatMap.get(q);
+  if(!found){for(const[k,v]of memberSeatMap){if(k.includes(query)||k.toUpperCase().includes(q)){found=v;break;}}}
+  ssClearHighlights();
+  if(found){
+    ssCurrentResult=found;nr.classList.remove('show');
+    const grp=ssGroups.find(g=>g.id===found.groupId);
+    const ml=grp?grp.members.map(m=>m.name).join('、'):'';
+    rc.innerHTML=`<div class="rname">${found.memberName}</div><div class="rdetail">${found.memberId}｜第 ${found.groupId} 組</div><div class="rseat">座位：<span>${found.secLabel} ${found.row} ${found.num}號</span></div><div class="rdetail" style="margin-top:4px;">同組：${ml}</div>`;
+    rc.classList.add('show');
+    ssHighlight(found.key,found.groupId);
+    const el=document.querySelector(`[data-sid="${found.key}"]`);
+    if(el)el.scrollIntoView({behavior:'smooth',block:'center',inline:'center'});
+  } else {rc.classList.remove('show');nr.classList.add('show');}
+  // suggestions
+  const matches=[];const seen=new Set();
+  for(const[k,v]of memberSeatMap){if((k.includes(query)||k.toUpperCase().includes(q))&&!seen.has(v.key)){seen.add(v.key);matches.push(v);if(matches.length>=6)break;}}
+  if(matches.length){
+    sug.innerHTML=matches.map(m=>{const g=ssGroups.find(x=>x.id===m.groupId);return`<div class="ss-sug-item" data-name="${m.memberName}"><span class="sug-name" style="color:#e8c547;font-weight:600;">${m.memberName}</span><span class="sug-detail" style="color:#6b6b8a;font-size:11px;">　${m.memberId}｜組${m.groupId} ${g?g.type||'':''}</span></div>`;}).join('');
+    sug.querySelectorAll('.ss-sug-item').forEach(el=>el.addEventListener('click',()=>{document.getElementById('ss-input').value=el.dataset.name;sug.classList.remove('show');ssSearch(el.dataset.name);}));
+    sug.classList.add('show');
+  } else sug.classList.remove('show');
+}
+window.ssClear=function(){document.getElementById('ss-input').value='';document.getElementById('ss-result').classList.remove('show');document.getElementById('ss-noresult').classList.remove('show');document.getElementById('ss-sug').classList.remove('show');ssClearHighlights();ssCurrentResult=null;};
+
+// Init on page show
+const _origShowPage2=window.showPage;
+window.showPage=function(id){
+  _origShowPage2(id);
+  if(id==='seats'){
+    setTimeout(buildSSChart,50);
+    const inp=document.getElementById('ss-input');
+    inp.oninput=()=>ssSearch(inp.value);
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter'){document.getElementById('ss-sug').classList.remove('show');ssSearch(inp.value);}if(e.key==='Escape')ssClear();});
+    document.addEventListener('click',e=>{if(!e.target.closest('#ss-input')&&!e.target.closest('#ss-sug'))document.getElementById('ss-sug').classList.remove('show');});
+  }
+};
+})();
+
 function checkPassword() {
   const val = document.getElementById('pw-input').value;
   if (val === '0101') {
@@ -1186,7 +1593,15 @@ function checkPassword() {
       <div class="tl-item"><div class="ti-title">進入展場／自由參觀</div></div>
       <div class="tl-resp"></div>
     </div>
-    <div style="margin-top:28px;opacity:0;animation:fadeUp 0.6s ease 0.8s forwards;">
+    <div style="margin-top:28px;opacity:0;animation:fadeUp 0.6s ease 0.8s forwards;display:flex;flex-direction:column;gap:10px;">
+      <div onclick="showPage('seats')" style="border:1px solid #2a2a2a;border-left:3px solid #7eb8c8;border-radius:6px;padding:20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:rgba(126,184,200,0.05);transition:background 0.2s,transform 0.2s;" onmouseover="this.style.background='rgba(126,184,200,0.1)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='rgba(126,184,200,0.05)';this.style.transform='translateX(0)'">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:#7eb8c8;margin-bottom:6px;text-transform:uppercase;">開幕典禮</div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:3px;">座位查詢</div>
+          <div style="font-size:12px;color:#888;">輸入姓名查詢座位・點擊進入</div>
+        </div>
+        <div style="font-size:20px;color:#555;">→</div>
+      </div>
       <div onclick="showPage('work-table')" style="border:1px solid #2a2a2a;border-left:3px solid #c86e6e;border-radius:6px;padding:20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:rgba(200,110,110,0.05);transition:background 0.2s,transform 0.2s;" onmouseover="this.style.background='rgba(200,110,110,0.1)';this.style.transform='translateX(4px)'" onmouseout="this.style.background='rgba(200,110,110,0.05)';this.style.transform='translateX(0)'">
         <div>
           <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:#c86e6e;margin-bottom:6px;text-transform:uppercase;">幹部專用</div>
